@@ -18,7 +18,7 @@ package de.taucher.atlassian_statuspage_api;
 
 public class Methods {
 	
-	public static boolean isEmpty(final CharSequence sequence) {
+	public static boolean isEmpty(CharSequence sequence) {
         return sequence == null || sequence.length() == 0;
     }
 
