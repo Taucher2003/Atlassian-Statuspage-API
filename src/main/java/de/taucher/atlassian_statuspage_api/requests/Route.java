@@ -35,6 +35,8 @@ public class Route {
 	public static class Pages {
 		public static final Route GET_PAGE_LIST = new Route("/pages", GET);
 		public static final Route GET_PAGE = new Route("/pages/{page_id}", GET);
+		public static final Route UPDATE_PAGE = new Route("/pages/{page_id}", PATCH);
+		public static final Route UPDATE_FULL_PAGE = new Route("/pages/{page_id}", PUT);
 	}
 	
 	public static class Components {
