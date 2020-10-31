@@ -33,21 +33,6 @@ import de.taucher.atlassian_statuspage_api.requests.Route;
 
 public class StatuspageAPI {
 	
-	public static void main(String[] args) {
-		StatuspageAPI api = new StatuspageAPI("b5f13430-1c57-4f87-b6f1-524e33c0c46b");
-		List<Page> list = api.getPages();
-		for(Page page : list) {
-			System.out.println(page.toString());
-			List<Component> list2 = page.getComponents();
-			for(Component component : list2) {
-				System.out.println(component.toString());
-				if(component.getName().equalsIgnoreCase("Teamspeak - Bot")) {
-					component.setStatus(Status.UNDER_MAINTENANCE);
-				}
-			}
-		}
-	}
-	
 	private String apiKey;
 	private Requester requester;
 	
