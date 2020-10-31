@@ -79,75 +79,27 @@ public class Component {
 	}
 	
 	public void setDescription(String description) {
-		Route.CompiledRoute route = Route.Components.UPDATE_COMPONENT.compile(pageId, id);
-		JSONObject payload = new JSONObject().put("component", new JSONObject().put("description", description).put("status", status.name().toLowerCase()).put("name", name)
-				.put("only_show_if_degraded", onlyShowIfDegraded).put("group_id", groupId).put("showcase", showcase));
-		Request request = new Request(route, RequestBody.create(Request.MEDIA_TYPE_JSON, payload.toString()));
-		api.getRequester().queueAsync(request, r -> {
-			if(r.isSuccessful()) {
-				this.description = description;
-			}
-		});
+		set(description, status, name, onlyShowIfDegraded, groupId, showcase);
 	}
 	
 	public void setStatus(Status status) {
-		Route.CompiledRoute route = Route.Components.UPDATE_COMPONENT.compile(pageId, id);
-		JSONObject payload = new JSONObject().put("component", new JSONObject().put("description", description).put("status", status.name().toLowerCase()).put("name", name)
-				.put("only_show_if_degraded", onlyShowIfDegraded).put("group_id", groupId).put("showcase", showcase));
-		Request request = new Request(route, RequestBody.create(Request.MEDIA_TYPE_JSON, payload.toString()));
-		api.getRequester().queueAsync(request, r -> {
-			if(r.isSuccessful()) {
-				this.status = status;
-			}
-		});
+		set(description, status, name, onlyShowIfDegraded, groupId, showcase);
 	}
 	
 	public void setName(String name) {
-		Route.CompiledRoute route = Route.Components.UPDATE_COMPONENT.compile(pageId, id);
-		JSONObject payload = new JSONObject().put("component", new JSONObject().put("description", description).put("status", status.name().toLowerCase()).put("name", name)
-				.put("only_show_if_degraded", onlyShowIfDegraded).put("group_id", groupId).put("showcase", showcase));
-		Request request = new Request(route, RequestBody.create(Request.MEDIA_TYPE_JSON, payload.toString()));
-		api.getRequester().queueAsync(request, r -> {
-			if(r.isSuccessful()) {
-				this.name = name;
-			}
-		});
+		set(description, status, name, onlyShowIfDegraded, groupId, showcase);
 	}
 	
 	public void setOnlyShowIfDegraded(boolean onlyShowIfDegraded) {
-		Route.CompiledRoute route = Route.Components.UPDATE_COMPONENT.compile(pageId, id);
-		JSONObject payload = new JSONObject().put("component", new JSONObject().put("description", description).put("status", status.name().toLowerCase()).put("name", name)
-				.put("only_show_if_degraded", onlyShowIfDegraded).put("group_id", groupId).put("showcase", showcase));
-		Request request = new Request(route, RequestBody.create(Request.MEDIA_TYPE_JSON, payload.toString()));
-		api.getRequester().queueAsync(request, r -> {
-			if(r.isSuccessful()) {
-				this.onlyShowIfDegraded = onlyShowIfDegraded;
-			}
-		});
+		set(description, status, name, onlyShowIfDegraded, groupId, showcase);
 	}
 	
 	public void setGroupId(String groupId) {
-		Route.CompiledRoute route = Route.Components.UPDATE_COMPONENT.compile(pageId, id);
-		JSONObject payload = new JSONObject().put("component", new JSONObject().put("description", description).put("status", status.name().toLowerCase()).put("name", name)
-				.put("only_show_if_degraded", onlyShowIfDegraded).put("group_id", groupId).put("showcase", showcase));
-		Request request = new Request(route, RequestBody.create(Request.MEDIA_TYPE_JSON, payload.toString()));
-		api.getRequester().queueAsync(request, r -> {
-			if(r.isSuccessful()) {
-				this.groupId = groupId;
-			}
-		});
+		set(description, status, name, onlyShowIfDegraded, groupId, showcase);
 	}
 	
 	public void setShowcase(boolean showcase) {
-		Route.CompiledRoute route = Route.Components.UPDATE_COMPONENT.compile(pageId, id);
-		JSONObject payload = new JSONObject().put("component", new JSONObject().put("description", description).put("status", status.name().toLowerCase()).put("name", name)
-				.put("only_show_if_degraded", onlyShowIfDegraded).put("group_id", groupId).put("showcase", showcase));
-		Request request = new Request(route, RequestBody.create(Request.MEDIA_TYPE_JSON, payload.toString()));
-		api.getRequester().queueAsync(request, r -> {
-			if(r.isSuccessful()) {
-				this.showcase = showcase;
-			}
-		});
+		set(description, status, name, onlyShowIfDegraded, groupId, showcase);
 	}
 	
 	public void set(String description, Status status, String name, boolean onlyShowIfDegraded, String groupId, boolean showcase) {
