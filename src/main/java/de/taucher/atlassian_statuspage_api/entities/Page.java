@@ -16,13 +16,16 @@
 
 package de.taucher.atlassian_statuspage_api.entities;
 
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import de.taucher.atlassian_statuspage_api.StatuspageAPI;
@@ -39,6 +42,7 @@ public class Page {
 	private String name, 
 					pageDescription, 
 					headline,
+					branding,
 					subdomain,
 					domain,
 					url,
@@ -79,11 +83,11 @@ public class Page {
 	private TwitterLogo twitterLogo;
 	
 	private Page(StatuspageAPI api,
-				String id, OffsetDateTime createdAt, OffsetDateTime updatedAt, String name, String pageDescription, String headline, String subdomain, String domain, String url, String supportUrl,
+				String id, OffsetDateTime createdAt, OffsetDateTime updatedAt, String name, String pageDescription, String headline, String branding, String subdomain, String domain, String url, String supportUrl,
 				boolean hiddenFromSearch, boolean allowPageSubscribers, boolean allowIncidentSubscribers, boolean allowEmailSubscribers, boolean allowSmsSubscribers, boolean allowRssSubscribers,
 				boolean allowWebhookSubscribers, String notificationsFromEmail, String notificationsEmailFooter, int activityScore, String twitterUsername, boolean viewersMustBeTeamMembers,
 				String ipRestrictions, String city, String state, String country, String timeZone, String cssBodyBackgroundColor, String cssFontColor, String cssLightFontColor, String cssGreens,
-				String cssYellows, String cssOranges, String cssBlues, String cssReds, String cssBoderColor, String cssGraphColor, String cssLinkColor, String cssNoData, FaviconLogo faviconLogo,
+				String cssYellows, String cssOranges, String cssBlues, String cssReds, String cssBorderColor, String cssGraphColor, String cssLinkColor, String cssNoData, FaviconLogo faviconLogo,
 				TransactionalLogo transactionalLogo, HeroCover heroCover, EmailLogo emailLogo, TwitterLogo twitterLogo) {
 		this.api = api;
 		this.id = id;
@@ -92,6 +96,7 @@ public class Page {
 		this.name = name;
 		this.pageDescription = pageDescription;
 		this.headline = headline;
+		this.branding = branding;
 		this.subdomain = subdomain;
 		this.domain = domain;
 		this.url = url;
@@ -121,7 +126,7 @@ public class Page {
 		this.cssOranges = cssOranges;
 		this.cssBlues = cssBlues;
 		this.cssReds = cssReds;
-		this.cssBorderColor = cssBoderColor;
+		this.cssBorderColor = cssBorderColor;
 		this.cssGraphColor = cssGraphColor;
 		this.cssLinkColor = cssLinkColor;
 		this.cssNoData = cssNoData;
@@ -139,6 +144,7 @@ public class Page {
 		String name = json.get("name") instanceof String ? json.getString("name") : null;
 		String pageDescription = json.get("page_description") instanceof String ? json.getString("page_description") : null;
 		String headline = json.get("headline") instanceof String ? json.getString("headline") : null;
+		String branding = json.get("branding") instanceof String ? json.getString("branding") : null;
 		String subdomain = json.get("subdomain") instanceof String ? json.getString("subdomain") : null;
 		String domain = json.get("domain") instanceof String ? json.getString("domain") : null;
 		String url = json.get("url") instanceof String ? json.getString("url") : null;
@@ -164,7 +170,7 @@ public class Page {
 		String cssLinkColor = json.get("css_link_color") instanceof String ? json.getString("css_link_color") : null;
 		String cssNoData = json.get("css_no_data") instanceof String ? json.getString("css_no_data") : null;
 		return new Page(api, id, createdAt, updatedAt, 
-				name, pageDescription, headline, subdomain, domain, url,
+				name, pageDescription, headline, branding, subdomain, domain, url,
 				supportUrl, json.getBoolean("hidden_from_search"), json.getBoolean("allow_page_subscribers"), json.getBoolean("allow_incident_subscribers"), 
 				json.getBoolean("allow_email_subscribers"), json.getBoolean("allow_sms_subscribers"), json.getBoolean("allow_rss_atom_feeds"), json.getBoolean("allow_webhook_subscribers"), 
 				notificationsFromEmail, notificationsEmailFooter, json.getInt("activity_score"), twitterUsername, 
@@ -174,6 +180,24 @@ public class Page {
 				cssGraphColor, cssLinkColor, cssNoData, FaviconLogo.fromJson(json.getJSONObject("twitter_logo")), 
 				TransactionalLogo.fromJson(json.getJSONObject("transactional_logo")), HeroCover.fromJson(json.getJSONObject("hero_cover")), 
 				EmailLogo.fromJson(json.getJSONObject("email_logo")), TwitterLogo.fromJson(json.getJSONObject("twitter_logo")));
+	}
+	
+	// Components
+	
+	public Component createComponent(String description, Status status, String name, boolean onlyShowIfDegraded, String groupId, boolean showcase) {
+		Route.CompiledRoute route = Route.Components.CREATE_COMPONENT.compile(id);
+		JSONObject payload = new JSONObject().put("component", new JSONObject().put("description", description)
+				.put("status", status.name().toLowerCase()).put("name", name).put("only_show_if_degraded", onlyShowIfDegraded)
+				.put("group_id", groupId).put("showcase", showcase));
+		Request request = new Request(route, RequestBody.create(Request.MEDIA_TYPE_JSON, payload.toString()));
+		Response response = api.getRequester().queue(request);
+		try {
+			JSONObject json = new JSONObject(response.body().string());
+			return Component.fromJson(api, json);
+		}catch(JSONException | IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public List<Component> getComponents(){
@@ -199,20 +223,237 @@ public class Page {
 	}
 	
 	public Component getComponent(String componentId) {
-		Component comp = null;
 		Route.CompiledRoute route = Route.Components.GET_COMPONENT.compile(id, componentId);
 		Request request = new Request(route, Request.EMPTY_BODY);
+		Response response = api.getRequester().queue(request);
 		try {
-			Response response = api.getRequester().queue(request);
 			JSONObject json = new JSONObject(response.body().string());
-			comp = Component.fromJson(api, json);
-		} catch (Exception e) {
+			return Component.fromJson(api, json);
+		} catch (JSONException | IOException e) {
 			e.printStackTrace();
 		}
-		return comp;
+		return null;
 	}
 	
-	//Getters
+	// Modify
+	
+	public void setName(String name) {
+		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
+				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
+				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
+	}
+	
+	public void setDomain(String domain) {
+		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
+				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
+				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
+	}
+	
+	public void setSubdomain(String subdomain) {
+		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
+				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
+				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
+	}
+	
+	public void setUrl(String url) {
+		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
+				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
+				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
+	}
+	
+	public void setBranding(String branding) {
+		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
+				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
+				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
+	}
+	
+	public void setCSSBodyBackgroundColor(String cssBodyBackgroundColor) {
+		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
+				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
+				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
+	}
+	
+	public void setCSSFontColor(String cssFontColor) {
+		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
+				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
+				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
+	}
+	
+	public void setCSSLightFontColor(String cssLightFontColor) {
+		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
+				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
+				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
+	}
+	
+	public void setCSSGreens(String cssGreens) {
+		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
+				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
+				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
+	}
+	
+	public void setCSSYellows(String cssYellows) {
+		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
+				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
+				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
+	}
+	
+	public void setCSSOranges(String cssOranges) {
+		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
+				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
+				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
+	}
+	
+	public void setCSSReds(String cssReds) {
+		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
+				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
+				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
+	}
+	
+	public void setCSSBlues(String cssBlues) {
+		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
+				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
+				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
+	}
+	
+	public void setCSSBorderColor(String cssBorderColor) {
+		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
+				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
+				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
+	}
+	
+	public void setCSSGraphColor(String cssGraphColor) {
+		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
+				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
+				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
+	}
+	
+	public void setCSSLinkColor(String cssLinkColor) {
+		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
+				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
+				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
+	}
+	
+	public void setCSSNoData(String cssNoData) {
+		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
+				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
+				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
+	}
+	
+	public void setHiddenFromSearch(boolean hiddenFromSearch) {
+		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
+				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
+				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
+	}
+	
+	public void setViewersMustBeTeamMembers(boolean viewersMustBeTeamMembers) {
+		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
+				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
+				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
+	}
+	
+	public void setAllowPageSubscribers(boolean allowPageSubscribers) {
+		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
+				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
+				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
+	}
+	
+	public void setAllowIncidentSubscribers(boolean allowIncidentSubscribers) {
+		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
+				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
+				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
+	}
+	
+	public void setAllowEmailSubscribers(boolean allowEmailSubscribers) {
+		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
+				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
+				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
+	}
+	
+	public void setAllowSmsSubscribers(boolean allowSmsSubscribers) {
+		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
+				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
+				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
+	}
+	
+	public void setAllowRssSubscribers(boolean allowRssSubscribers) {
+		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
+				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
+				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
+	}
+	
+	public void setAllowWebhookSubscribers(boolean allowWebhookSubscribers) {
+		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
+				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
+				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
+	}
+	
+	public void setNotificationsFromEmail(String notificationsFromEmail) {
+		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
+				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
+				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
+	}
+	
+	public void setTimeZone(String timeZone) {
+		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
+				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
+				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
+	}
+	
+	public void setNotificationsEmailFooter(String notificationsEmailFooter) {
+		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
+				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
+				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
+	}
+	
+	public void set(String name, String domain, String subdomain, String url, String branding, String cssBodyBackgroundColor, String cssFontColor, String cssLightFontColor, String cssGreens,
+			String cssYellows, String cssOranges, String cssReds, String cssBlues, String cssBorderColor, String cssGraphColor, String cssLinkColor, String cssNoData, boolean hiddenFromSearch,
+			boolean viewersMustBeTeamMembers, boolean allowPageSubscribers, boolean allowIncidentSubscribers, boolean allowEmailSubscribers, boolean allowSmsSubscribers, boolean allowRssSubscribers,
+			boolean allowWebhookSubscribers, String notificationsFromEmail, String timeZone, String notificationsEmailFooter) {
+		Route.CompiledRoute route = Route.Pages.UPDATE_FULL_PAGE.compile(id);
+		JSONObject payload = new JSONObject().put("page", new JSONObject().put("name", name).put("domain", domain).put("subdomain", subdomain)
+				.put("url", url).put("branding", branding).put("css_body_background_color", cssBodyBackgroundColor).put("css_font_color", cssFontColor)
+				.put("css_light_font_color", cssLightFontColor).put("css_greens", cssGreens).put("css_yellows", cssYellows).put("css_oranges", cssOranges)
+				.put("css_reds", cssReds).put("css_blues", cssBlues).put("css_border_color", cssBorderColor).put("css_graph_color", cssGraphColor)
+				.put("css_link_color", cssLinkColor).put("css_no_data", cssNoData).put("hidden_from_search", hiddenFromSearch).put("viewers_must_be_team_members", viewersMustBeTeamMembers)
+				.put("allow_page_subscribers", allowPageSubscribers).put("allow_incident_subscribers", allowIncidentSubscribers).put("allow_email_subscribers", allowEmailSubscribers)
+				.put("allow_sms_subscribers", allowSmsSubscribers).put("allow_rss_atom_feeds", allowRssSubscribers).put("allow_webhook_subscribers", allowWebhookSubscribers)
+				.put("notifications_from_email", notificationsFromEmail).put("time_zone", timeZone).put("notifications_email_footer", notificationsEmailFooter));
+		Request request = new Request(route, RequestBody.create(Request.MEDIA_TYPE_JSON, payload.toString()));
+		api.getRequester().queueAsync(request, r -> {
+			if(r.isSuccessful()) {
+				this.name = name;
+				this.branding = branding;
+				this.subdomain = subdomain;
+				this.domain = domain;
+				this.url = url;
+				this.hiddenFromSearch = hiddenFromSearch;
+				this.allowPageSubscribers = allowPageSubscribers;
+				this.allowIncidentSubscribers = allowIncidentSubscribers;
+				this.allowEmailSubscribers = allowEmailSubscribers;
+				this.allowSmsSubscribers = allowSmsSubscribers;
+				this.allowRssSubscribers = allowRssSubscribers;
+				this.allowWebhookSubscribers = allowWebhookSubscribers;
+				this.notificationsFromEmail = notificationsFromEmail;
+				this.notificationsEmailFooter = notificationsEmailFooter;
+				this.viewersMustBeTeamMembers = viewersMustBeTeamMembers;
+				this.timeZone = timeZone;
+				this.cssBodyBackgroundColor = cssBodyBackgroundColor;
+				this.cssFontColor = cssFontColor;
+				this.cssLightFontColor = cssLightFontColor;
+				this.cssGreens = cssGreens;
+				this.cssYellows = cssYellows;
+				this.cssOranges = cssOranges;
+				this.cssBlues = cssBlues;
+				this.cssReds = cssReds;
+				this.cssBorderColor = cssBorderColor;
+				this.cssGraphColor = cssGraphColor;
+				this.cssLinkColor = cssLinkColor;
+				this.cssNoData = cssNoData;
+			}
+		});
+	}
+	
+	// Getters
 	
 	public StatuspageAPI getApi() {
 		return api;
@@ -220,6 +461,10 @@ public class Page {
 	
 	public int getActivityScore() {
 		return activityScore;
+	}
+	
+	public String getBranding() {
+		return branding;
 	}
 	
 	public String getCity() {
