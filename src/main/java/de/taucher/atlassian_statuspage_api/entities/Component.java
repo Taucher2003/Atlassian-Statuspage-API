@@ -28,7 +28,7 @@ import de.taucher.atlassian_statuspage_api.requests.Route;
 
 /**
  * This class wraps a Component item. Components are the individual pieces of 
- * infrastructure that are listed on your status page. This endpoint is used 
+ * infrastructure that are listed on your {@link Page status page}. This class is used 
  * primarily to update status on individual components in the event of an outage or for degraded performance.
  * 
  * @since 1.0.0

@@ -137,6 +137,16 @@ public class Page {
 		this.twitterLogo = twitterLogo;
 	}
 	
+	/**
+	 * Creates an {@link Page} instance. This method <b>should not be used</b> in your code.
+	 * @param api the api instance, that requested this resource
+	 * @param json the json response from the REST api
+	 * @return a Page instance
+	 * @since 1.0.0
+	 * 
+	 * @see StatuspageAPI#getPage(String)
+	 * @see StatuspageAPI#getPages()
+	 */
 	public static Page fromJson(StatuspageAPI api, JSONObject json) {
 		String id = json.get("id") instanceof String ? json.getString("id") : null;
 		OffsetDateTime createdAt = json.get("created_at") instanceof String ? OffsetDateTime.parse(json.getString("created_at")) : null;
@@ -184,6 +194,16 @@ public class Page {
 	
 	// Components
 	
+	/**
+	 * Creates a {@link Component}
+	 * @param description
+	 * @param status
+	 * @param name
+	 * @param onlyShowIfDegraded
+	 * @param groupId
+	 * @param showcase
+	 * @return
+	 */
 	public Component createComponent(String description, Status status, String name, boolean onlyShowIfDegraded, String groupId, boolean showcase) {
 		Route.CompiledRoute route = Route.Components.CREATE_COMPONENT.compile(id);
 		JSONObject payload = new JSONObject().put("component", new JSONObject().put("description", description)
@@ -200,6 +220,11 @@ public class Page {
 		return null;
 	}
 	
+	/**
+	 * Get a list of all {@link Component} you have access to
+	 * @return a list with the Component instances
+	 * @since 1.0.0
+	 */
 	public List<Component> getComponents(){
 		List<Component> result = new ArrayList<>();
 		Route.CompiledRoute route = Route.Components.GET_COMPONENT_LIST.compile(id);
@@ -222,6 +247,19 @@ public class Page {
 		return result;
 	}
 	
+	/**
+	 * Get a {@link Component} with the given id
+	 * 
+	 * <br><br>This method is equivalent to
+	 * <pre>{@code
+	 * getComponents().stream().filter(
+	 * 	c -> c.getId().equals(pageId)
+	 * ).findFirst().orElse(null);
+	 * }</pre>
+	 * @param componentId the id of the component
+	 * @return the Component instance
+	 * @since 1.0.0
+	 */
 	public Component getComponent(String componentId) {
 		Route.CompiledRoute route = Route.Components.GET_COMPONENT.compile(id, componentId);
 		Request request = new Request(route, Request.EMPTY_BODY);
@@ -237,174 +275,431 @@ public class Page {
 	
 	// Modify
 	
+	/**
+	 * Change the name of this page
+	 * @param description the new description
+	 * @since 1.0.0
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
+	 */
 	public void setName(String name) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
 				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
 				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
 	}
 	
+	/**
+	 * Change to domain of this page
+	 * @param domain the new domain
+	 * @since 1.0.0
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
+	 */
 	public void setDomain(String domain) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
 				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
 				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
 	}
 	
+	/**
+	 * Change the subdomain of this page
+	 * @param subdomain the new subdomain
+	 * @since 1.0.0
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
+	 */
 	public void setSubdomain(String subdomain) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
 				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
 				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
 	}
 	
+	/**
+	 * Change the url of this page
+	 * @param url the new url
+	 * @since 1.0.0
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
+	 */
 	public void setUrl(String url) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
 				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
 				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
 	}
 	
+	/**
+	 * Change the branding of this page
+	 * @param branding the new branding
+	 * @since 1.0.0
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
+	 */
 	public void setBranding(String branding) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
 				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
 				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
 	}
 	
+	/**
+	 * Change the CSS Body Background Color
+	 * @param cssBodyBackgroundColor the new background color
+	 * @since 1.0.0
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
+	 */
 	public void setCSSBodyBackgroundColor(String cssBodyBackgroundColor) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
 				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
 				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
 	}
 	
+	/**
+	 * Change the CSS Font Color
+	 * @param cssFontColor the new font color
+	 * @since 1.0.0
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
+	 */
 	public void setCSSFontColor(String cssFontColor) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
 				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
 				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
 	}
 	
+	/**
+	 * Change the CSS Light Font Color
+	 * @param cssLightFontColor the new light font color
+	 * @since 1.0.0
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
+	 */
 	public void setCSSLightFontColor(String cssLightFontColor) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
 				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
 				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
 	}
 	
+	/**
+	 * Change the CSS Greens
+	 * @param cssGreens the new greens
+	 * @since 1.0.0
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
+	 */
 	public void setCSSGreens(String cssGreens) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
 				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
 				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
 	}
 	
+	/**
+	 * Change the CSS Yellows
+	 * @param cssYellows the new yellows
+	 * @since 1.0.0
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
+	 */
 	public void setCSSYellows(String cssYellows) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
 				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
 				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
 	}
 	
+	/**
+	 * Change the CSS Oranges
+	 * @param cssOranges the new oranges
+	 * @since 1.0.0
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
+	 */
 	public void setCSSOranges(String cssOranges) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
 				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
 				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
 	}
 	
+	/**
+	 * Change the CSS Reds
+	 * @param cssReds the new reds
+	 * @since 1.0.0
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
+	 */
 	public void setCSSReds(String cssReds) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
 				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
 				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
 	}
 	
+	/**
+	 * Change the CSS Blues
+	 * @param cssBlues the new blues
+	 * @since 1.0.0
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
+	 */
 	public void setCSSBlues(String cssBlues) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
 				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
 				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
 	}
 	
+	/**
+	 * Change the CSS Border Color
+	 * @param cssBorderColor the new border color
+	 * @since 1.0.0
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
+	 */
 	public void setCSSBorderColor(String cssBorderColor) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
 				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
 				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
 	}
 	
+	/**
+	 * Change the CSS Graph Color
+	 * @param cssGraphColor the new graph color
+	 * @since 1.0.0
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
+	 */
 	public void setCSSGraphColor(String cssGraphColor) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
 				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
 				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
 	}
 	
+	/**
+	 * Change the CSS Link Color
+	 * @param cssLinkColor the new link color
+	 * @since 1.0.0
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
+	 */
 	public void setCSSLinkColor(String cssLinkColor) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
 				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
 				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
 	}
 	
+	/**
+	 * Change the CSS No Data
+	 * @param cssNoData the new no data
+	 * @since 1.0.0
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
+	 */
 	public void setCSSNoData(String cssNoData) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
 				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
 				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
 	}
 	
+	/**
+	 * Change if the Page should be hidden from a search
+	 * @param hiddenFromSearch a boolean that indicates the new value
+	 * @since 1.0.0
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
+	 */
 	public void setHiddenFromSearch(boolean hiddenFromSearch) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
 				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
 				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
 	}
 	
+	/**
+	 * Change if the Page should only be visible to team members
+	 * @param viewersMustBeTeamMembers a boolean that indicates the new value
+	 * @since 1.0.0
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
+	 */
 	public void setViewersMustBeTeamMembers(boolean viewersMustBeTeamMembers) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
 				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
 				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
 	}
 	
+	/**
+	 * Change if the Page should allow subscriptions
+	 * @param allowPageSubscribers a boolean that indicates the new value
+	 * @since 1.0.0
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String) 
+	 */
 	public void setAllowPageSubscribers(boolean allowPageSubscribers) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
 				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
 				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
 	}
 	
+	/**
+	 * Change if the Page should allow subscriptions to specific incidents
+	 * @param allowIncidentSubscribers a boolean that indicates the new value
+	 * @since 1.0.0
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
+	 */
 	public void setAllowIncidentSubscribers(boolean allowIncidentSubscribers) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
 				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
 				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
 	}
 	
+	/**
+	 * Change if the Page should allow subscriptions via email
+	 * @param allowEmailSubscribers a boolean that indicates the new value
+	 * @since 1.0.0
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
+	 */
 	public void setAllowEmailSubscribers(boolean allowEmailSubscribers) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
 				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
 				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
 	}
 	
+	/**
+	 * Change if the Page should allow subscriptions via sms
+	 * @param allowSmsSubscribers a boolean that indicates the new value
+	 * @since 1.0.0
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
+	 */
 	public void setAllowSmsSubscribers(boolean allowSmsSubscribers) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
 				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
 				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
 	}
 	
+	/**
+	 * Change if the RSS Feed should be enabled for this Page
+	 * @param allowRssSubscribers a boolean that indicates the new value
+	 * @since 1.0.0
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
+	 */
 	public void setAllowRssSubscribers(boolean allowRssSubscribers) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
 				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
 				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
 	}
 	
+	/**
+	 * Change if the Page should allow subscriptions via webhook
+	 * @param allowWebhookSubscribers a boolean that indicates the new value
+	 * @since 1.0.0
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
+	 */
 	public void setAllowWebhookSubscribers(boolean allowWebhookSubscribers) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
 				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
 				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
 	}
 	
+	/**
+	 * I'm not quite sure what this property is, but it is documented in the statuspage api and so I put it here
+	 * @param notificationsFromEmail the new value
+	 * @since 1.0.0
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
+	 */
 	public void setNotificationsFromEmail(String notificationsFromEmail) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
 				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
 				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
 	}
 	
+	/**
+	 * Change the timezone of this Page
+	 * @param timeZone the new timezone
+	 * @since 1.0.0
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
+	 */
 	public void setTimeZone(String timeZone) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
 				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
 				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
 	}
 	
+	/**
+	 * I'm not quite sure what this property is, but it is documented in the statuspage api and so I put it here
+	 * @param notificationsEmailFooter the new value
+	 * @since 1.0.0
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
+	 */
 	public void setNotificationsEmailFooter(String notificationsEmailFooter) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,
 				cssLinkColor, cssNoData, hiddenFromSearch, viewersMustBeTeamMembers, allowPageSubscribers, allowIncidentSubscribers, allowEmailSubscribers, allowSmsSubscribers, allowRssSubscribers,
 				allowWebhookSubscribers, notificationsFromEmail, timeZone, notificationsEmailFooter);
 	}
 	
+	/**
+	 * Modify the full page. If you need to change multiple values at the same time, it
+	 * is more efficient, to use this method instead of calling the methods for each property to change.
+	 * @param name the new name
+	 * @param domain the new domain
+	 * @param subdomain the new subdomain
+	 * @param url the new url
+	 * @param branding the new branding
+	 * @param cssBodyBackgroundColor the new body background color
+	 * @param cssFontColor the new font color
+	 * @param cssLightFontColor the new light font color
+	 * @param cssGreens the new greens color
+	 * @param cssYellows the new yellows color
+	 * @param cssOranges the new oranges color
+	 * @param cssReds the new reds color
+	 * @param cssBlues the new blues color
+	 * @param cssBorderColor the new border color
+	 * @param cssGraphColor the new graph color
+	 * @param cssLinkColor the new link color
+	 * @param cssNoData the new no data
+	 * @param hiddenFromSearch a boolean that indicates the new value
+	 * @param viewersMustBeTeamMembers a boolean that indicates the new value
+	 * @param allowPageSubscribers a boolean that indicates the new value
+	 * @param allowIncidentSubscribers a boolean that indicates the new value
+	 * @param allowEmailSubscribers a boolean that indicates the new value
+	 * @param allowSmsSubscribers a boolean that indicates the new value
+	 * @param allowRssSubscribers a boolean that indicates the new value
+	 * @param allowWebhookSubscribers a boolean that indicates the new value
+	 * @param notificationsFromEmail a value I don't know what it does. If you know it, help is appreciated
+	 * @param timeZone the new time zone
+	 * @param notificationsEmailFooter a value I don't know what it does. If you know it, help is appreciated
+	 * @since 1.0.0
+	 * @see #setName(String)
+	 * @see #setDomain(String)
+	 * @see #setSubdomain(String)
+	 * @see #setUrl(String)
+	 * @see #setBranding(String)
+	 * @see #setCSSBodyBackgroundColor(String)
+	 * @see #setCSSFontColor(String)
+	 * @see #setCSSLightFontColor(String)
+	 * @see #setCSSGreens(String)
+	 * @see #setCSSYellows(String)
+	 * @see #setCSSOranges(String)
+	 * @see #setCSSReds(String)
+	 * @see #setCSSBlues(String)
+	 * @see #setCSSBorderColor(String)
+	 * @see #setCSSGraphColor(String)
+	 * @see #setCSSLinkColor(String)
+	 * @see #setCSSNoData(String)
+	 * @see #setHiddenFromSearch(boolean)
+	 * @see #setViewersMustBeTeamMembers(boolean)
+	 * @see #setAllowPageSubscribers(boolean)
+	 * @see #setAllowIncidentSubscribers(boolean)
+	 * @see #setAllowEmailSubscribers(boolean)
+	 * @see #setAllowSmsSubscribers(boolean)
+	 * @see #setAllowRssSubscribers(boolean)
+	 * @see #setAllowWebhookSubscribers(boolean)
+	 * @see #setNotificationsFromEmail(String)
+	 * @see #setTimeZone(String)
+	 * @see #setNotificationsEmailFooter(String)
+	 */
 	public void set(String name, String domain, String subdomain, String url, String branding, String cssBodyBackgroundColor, String cssFontColor, String cssLightFontColor, String cssGreens,
 			String cssYellows, String cssOranges, String cssReds, String cssBlues, String cssBorderColor, String cssGraphColor, String cssLinkColor, String cssNoData, boolean hiddenFromSearch,
 			boolean viewersMustBeTeamMembers, boolean allowPageSubscribers, boolean allowIncidentSubscribers, boolean allowEmailSubscribers, boolean allowSmsSubscribers, boolean allowRssSubscribers,
