@@ -200,6 +200,10 @@ public class Component {
 		});
 	}
 	
+	/**
+	 * Deletes this component.
+	 * <br>Be careful, this <b>cannot be undone</b>
+	 */
 	public void delete() {
 		api.getPage(pageId).delete(this);
 	}

@@ -273,10 +273,20 @@ public class Page {
 		return null;
 	}
 	
+	/**
+	 * Deletes a {@link Component} from this {@link Page}
+	 * <br>Be careful, this <b>cannot be undone</b>
+	 * @param component the component to delete
+	 */
 	public void delete(Component component) {
 		delete(component.getId());
 	}
 	
+	/**
+	 * Deletes a {@link Component} from this {@link Page}
+	 * <br>Be careful, this <b>cannot be undone</b>
+	 * @param componentId the id of the component to delete
+	 */
 	public void delete(String componentId) {
 		Route.CompiledRoute route = Route.Components.DELETE_COMPONENT.compile(id, componentId);
 		Request request = new Request(route, Request.EMPTY_BODY);
