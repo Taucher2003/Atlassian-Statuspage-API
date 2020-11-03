@@ -45,6 +45,6 @@ public class Request {
 	
 	@Override
 	public String toString() {
-		return "Request(route="+compiledRoute.getComiledUrl()+"/"+compiledRoute.getRoute().getMethod().name()+")";
+		return "Request(route="+compiledRoute.getRoute().getMethod().name()+" "+compiledRoute.getComiledUrl()+")";
 	}
 }
