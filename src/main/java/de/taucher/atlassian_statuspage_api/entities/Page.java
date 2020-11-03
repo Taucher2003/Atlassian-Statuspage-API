@@ -273,6 +273,16 @@ public class Page {
 		return null;
 	}
 	
+	public void delete(Component component) {
+		delete(component.getId());
+	}
+	
+	public void delete(String componentId) {
+		Route.CompiledRoute route = Route.Components.DELETE_COMPONENT.compile(id, componentId);
+		Request request = new Request(route, Request.EMPTY_BODY);
+		api.getRequester().queueAsync(request);
+	}
+	
 	// Modify
 	
 	/**

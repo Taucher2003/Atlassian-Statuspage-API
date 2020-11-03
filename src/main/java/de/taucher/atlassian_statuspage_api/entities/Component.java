@@ -200,6 +200,10 @@ public class Component {
 		});
 	}
 	
+	public void delete() {
+		api.getPage(pageId).delete(this);
+	}
+	
 	//Getters
 	
 	/**

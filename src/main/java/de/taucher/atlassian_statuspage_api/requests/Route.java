@@ -45,6 +45,7 @@ public class Route {
 		public static final Route GET_COMPONENT = new Route("/pages/{page_id}/components/{component_id}", GET);
 		public static final Route UPDATE_COMPONENT = new Route("/pages/{page_id}/components/{component_id}", PATCH);
 		public static final Route UPDATE_FULL_COMPONENT = new Route("/pages/{page_id}/components/{component_id}", PUT);
+		public static final Route DELETE_COMPONENT = new Route("/pages/{page_id}/components/{component_id}", DELETE);
 	}
 	
 	private String url;
