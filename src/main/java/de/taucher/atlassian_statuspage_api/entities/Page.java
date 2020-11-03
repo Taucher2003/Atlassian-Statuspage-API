@@ -195,14 +195,14 @@ public class Page {
 	// Components
 	
 	/**
-	 * Creates a {@link Component}
-	 * @param description
-	 * @param status
-	 * @param name
-	 * @param onlyShowIfDegraded
-	 * @param groupId
-	 * @param showcase
-	 * @return
+	 * Creates a {@link Component} in this {@link Page}
+	 * @param description the description of the Component
+	 * @param status the Status of the Component
+	 * @param name the Name of the Component
+	 * @param onlyShowIfDegraded the component will only be shown, if its status is degraded.
+	 * @param groupId the id of the group this component belongs to
+	 * @param showcase true, if this component should be shown
+	 * @return the created component
 	 */
 	public Component createComponent(String description, Status status, String name, boolean onlyShowIfDegraded, String groupId, boolean showcase) {
 		Route.CompiledRoute route = Route.Components.CREATE_COMPONENT.compile(id);
@@ -750,186 +750,376 @@ public class Page {
 	
 	// Getters
 	
+	/**
+	 * Gets the api instance that requested this resource
+	 * @return the instance
+	 * @since 1.0.0
+	 */
 	public StatuspageAPI getApi() {
 		return api;
 	}
 	
+	/**
+	 * Get the activity score of this {@link Page}
+	 * @return the activity score as int
+	 */
 	public int getActivityScore() {
 		return activityScore;
 	}
 	
+	/**
+	 * Get the branding level of this {@link Page}
+	 * @return the branding level
+	 */
 	public String getBranding() {
 		return branding;
 	}
 	
+	/**
+	 * Get the city of this {@link Page}
+	 * @return the city
+	 */
 	public String getCity() {
 		return city;
 	}
 	
+	/**
+	 * Get the country of his {@link Page}
+	 * @return the country
+	 */
 	public String getCountry() {
 		return country;
 	}
-	
+	/**
+	 * Get the time when this page was created
+	 * @return an OffsetDateTime representing the timestamp, when this page was created
+	 * @since 1.0.0
+	 * @see #getUpdatedAt()
+	 */
 	public OffsetDateTime getCreatedAt() {
 		return createdAt;
 	}
 	
+	/**
+	 * Get the css for the blues
+	 * @return the color code
+	 */
 	public String getCssBlues() {
 		return cssBlues;
 	}
 	
+	/**
+	 * Get the css for the body background color
+	 * @return the color code
+	 */
 	public String getCssBodyBackgroundColor() {
 		return cssBodyBackgroundColor;
 	}
 	
+	/**
+	 * Get the css for the border color
+	 * @return the color code
+	 */
 	public String getCssBorderColor() {
 		return cssBorderColor;
 	}
 	
+	/**
+	 * Get the css for the font color
+	 * @return the color code
+	 */
 	public String getCssFontColor() {
 		return cssFontColor;
 	}
 	
+	/**
+	 * Get the css for the graph color
+	 * @return the color code
+	 */
 	public String getCssGraphColor() {
 		return cssGraphColor;
 	}
 	
+	/**
+	 * Get the css for the greens
+	 * @return the color code
+	 */
 	public String getCssGreens() {
 		return cssGreens;
 	}
 	
+	/**
+	 * Get the css for the light font color
+	 * @return the color code
+	 */
 	public String getCssLightFontColor() {
 		return cssLightFontColor;
 	}
 	
+	/**
+	 * Get the css for the link color
+	 * @return the color code
+	 */
 	public String getCssLinkColor() {
 		return cssLinkColor;
 	}
 	
+	/**
+	 * Get the css for the no data
+	 * @return the color code
+	 */
 	public String getCssNoData() {
 		return cssNoData;
 	}
 	
+	/**
+	 * Get the css for the oranges
+	 * @return the color code
+	 */
 	public String getCssOranges() {
 		return cssOranges;
 	}
 	
+	/**
+	 * Get the css for the reds
+	 * @return the color code
+	 */
 	public String getCssReds() {
 		return cssReds;
 	}
 	
+	/**
+	 * Get the css for the yellows
+	 * @return the color code
+	 */
 	public String getCssYellows() {
 		return cssYellows;
 	}
 	
+	/**
+	 * Get the custom domain for this {@link Page}
+	 * @return the custom domain
+	 */
 	public String getDomain() {
 		return domain;
 	}
 	
+	/**
+	 * Get the EmailLogo for this {@link Page}
+	 * @return the EmailLogo
+	 */
 	public EmailLogo getEmailLogo() {
 		return emailLogo;
 	}
 	
+	/**
+	 * Get the FaviconLogo for this {@link Page}
+	 * @return the FaviconLogo
+	 */
 	public FaviconLogo getFaviconLogo() {
 		return faviconLogo;
 	}
 	
+	/**
+	 * Get the headline for this {@link Page}
+	 * @return the headline
+	 */
 	public String getHeadline() {
 		return headline;
 	}
 	
+	/**
+	 * Get the HeroCover for this {@link Page}
+	 * @return the HeroCover
+	 */
 	public HeroCover getHeroCover() {
 		return heroCover;
 	}
 	
+	/**
+	 * Get the id of this {@link Page}
+	 * @return the id
+	 */
 	public String getId() {
 		return id;
 	}
 	
+	/**
+	 * Get the ip restrictions of this {@link Page}
+	 * @return the ip restrictions
+	 */
 	public String getIpRestrictions() {
 		return ipRestrictions;
 	}
 	
+	/**
+	 * Get the name of this {@link Page}
+	 * @return the name
+	 */
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * Get the footer for the notification emails sent by this {@link Page}
+	 * @return the email footer
+	 */
 	public String getNotificationsEmailFooter() {
 		return notificationsEmailFooter;
 	}
 	
+	/**
+	 * This is a value where I don't know what it does. 
+	 * It is documented in the statuspage.io api docs so I put it here.
+	 * If someone knows what this does, help is appreciated
+	 * @return the value
+	 */
 	public String getNotificationsFromEmail() {
 		return notificationsFromEmail;
 	}
 	
+	/**
+	 * Get the page description of this {@link Page}
+	 * @return the description
+	 */
 	public String getPageDescription() {
 		return pageDescription;
 	}
 	
+	/**
+	 * Get the state of the {@link Page}
+	 * @return the state
+	 */
 	public String getState() {
 		return state;
 	}
 	
+	/**
+	 * Get the subdomain of the {@link Page}
+	 * @return the subdomain
+	 */
 	public String getSubdomain() {
 		return subdomain;
 	}
 	
+	/**
+	 * Get the support url of the {@link Page}
+	 * @return the support url
+	 */
 	public String getSupportUrl() {
 		return supportUrl;
 	}
 	
+	/**
+	 * Get the time zone of the {@link Page}
+	 * @return the time zone
+	 */
 	public String getTimeZone() {
 		return timeZone;
 	}
 	
+	/**
+	 * Get the TransactionalLogo of the {@link Page}
+	 * @return the TransactionalLogo
+	 */
 	public TransactionalLogo getTransactionalLogo() {
 		return transactionalLogo;
 	}
 	
+	/**
+	 * Get the TwitterLogo of the {@link Page}
+	 * @return the TwitterLogo
+	 */
 	public TwitterLogo getTwitterLogo() {
 		return twitterLogo;
 	}
 	
+	/**
+	 * Get the twitter username of the {@link Page}
+	 * @return the twitter username
+	 */
 	public String getTwitterUsername() {
 		return twitterUsername;
 	}
 	
+	/**
+	 * Get the time when this page was updated
+	 * @return an OffsetDateTime representing the timestamp, when this page was updated
+	 * @since 1.0.0
+	 * @see #getCreatedAt()
+	 */
 	public OffsetDateTime getUpdatedAt() {
 		return updatedAt;
 	}
 	
+	/**
+	 * Get the url of this {@link Page}
+	 * @return the url
+	 */
 	public String getUrl() {
 		return url;
 	}
 	
+	/**
+	 * Get if the page accepts subscriptions via email
+	 * @return a boolean representing the value
+	 */
 	public boolean isAllowEmailSubscribers() {
 		return allowEmailSubscribers;
 	}
 	
+	/**
+	 * Get if the page accepts subscriptions to specific incidents
+	 * @return a boolean representing the value
+	 */
 	public boolean isAllowIncidentSubscribers() {
 		return allowIncidentSubscribers;
 	}
 	
+	/**
+	 * Get if the page accepts subscriptions
+	 * @return a boolean representing the value
+	 */
 	public boolean isAllowPageSubscribers() {
 		return allowPageSubscribers;
 	}
 	
+	/**
+	 * Get if the rss feed is enabled
+	 * @return a boolean representing the value
+	 */
 	public boolean isAllowRssSubscribers() {
 		return allowRssSubscribers;
 	}
 	
+	/**
+	 * Get if the page accepts subscriptions via sms
+	 * @return a boolean representing the value
+	 */
 	public boolean isAllowSmsSubscribers() {
 		return allowSmsSubscribers;
 	}
 	
+	/**
+	 * Get if the page accepts subscriptions via webhook
+	 * @return a boolean representing the value
+	 */
 	public boolean isAllowWebhookSubscribers() {
 		return allowWebhookSubscribers;
 	}
 	
+	/**
+	 * Get if the page is hidden from searches
+	 * @return a boolean representing the value
+	 */
 	public boolean isHiddenFromSearch() {
 		return hiddenFromSearch;
 	}
 	
+	/**
+	 * Get if the page can only be viewed by team members
+	 * @return a boolean representing the value
+	 */
 	public boolean isViewersMustBeTeamMembers() {
 		return viewersMustBeTeamMembers;
 	}
