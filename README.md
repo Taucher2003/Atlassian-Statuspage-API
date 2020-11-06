@@ -3,7 +3,7 @@
 This library is made to provide an easy usage of the REST API from statuspage.io made by Atlassian.
 <br>
 <br>[More information about statuspage](https://www.atlassian.com/software/statuspage)
-<br>[Developer documentation](developer.statuspage.io)
+<br>[Developer documentation](https://developer.statuspage.io)
 
 <br>
 
