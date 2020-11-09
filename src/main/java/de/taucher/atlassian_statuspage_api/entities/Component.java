@@ -16,45 +16,42 @@
 
 package de.taucher.atlassian_statuspage_api.entities;
 
-import java.time.OffsetDateTime;
-
-import org.json.JSONObject;
-
 import com.squareup.okhttp.RequestBody;
-
 import de.taucher.atlassian_statuspage_api.StatuspageAPI;
 import de.taucher.atlassian_statuspage_api.requests.Request;
 import de.taucher.atlassian_statuspage_api.requests.Route;
+import org.json.JSONObject;
+
+import java.time.OffsetDateTime;
 
 /**
- * This class wraps a Component item. Components are the individual pieces of 
- * infrastructure that are listed on your {@link Page status page}. This class is used 
+ * This class wraps a Component item. Components are the individual pieces of
+ * infrastructure that are listed on your {@link Page status page}. This class is used
  * primarily to update status on individual components in the event of an outage or for degraded performance.
- * 
- * @since 1.0.0
  *
+ * @since 1.0.0
  */
 public class Component {
 
-	private StatuspageAPI api;
-	
-	private String id;
-	private String pageId;
+	private final StatuspageAPI api;
+
+	private final String id;
+	private final String pageId;
 	private String groupId;
-	private OffsetDateTime createdAt;
-	private OffsetDateTime updatedAt;
-	private boolean group;
+	private final OffsetDateTime createdAt;
+	private final OffsetDateTime updatedAt;
+	private final boolean group;
 	private String name;
 	private String description;
-	private int position;
+	private final int position;
 	private Status status;
 	private boolean showcase;
 	private boolean onlyShowIfDegraded;
-	private String automationEmail;
-	
+	private final String automationEmail;
+
 	private Component(StatuspageAPI api,
-			String id, String pageId, String groupId, OffsetDateTime createdAt, OffsetDateTime updatedAt, boolean group,
-			String name, String description, int position, Status status, boolean showcase, boolean onlyShowIfDegraded, String automationEmail) {
+					  String id, String pageId, String groupId, OffsetDateTime createdAt, OffsetDateTime updatedAt, boolean group,
+					  String name, String description, int position, Status status, boolean showcase, boolean onlyShowIfDegraded, String automationEmail) {
 		this.api = api;
 		this.id = id;
 		this.pageId = pageId;

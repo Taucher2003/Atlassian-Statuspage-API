@@ -16,34 +16,32 @@
 
 package de.taucher.atlassian_statuspage_api;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import com.squareup.okhttp.Response;
-
 import de.taucher.atlassian_statuspage_api.entities.Page;
 import de.taucher.atlassian_statuspage_api.requests.Request;
 import de.taucher.atlassian_statuspage_api.requests.Requester;
 import de.taucher.atlassian_statuspage_api.requests.Route;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Root class of the Library. Use the constructor {@link #StatuspageAPI(String)} to create an instance.
  * From this class you can get a {@link de.taucher.atlassian_statuspage_api.entities.Page Page} and
  * perform actions on these Pages.
- * 
- * @since 1.0.0
  *
+ * @since 1.0.0
  */
 public class StatuspageAPI {
-	
-	private String apiKey;
-	private Requester requester;
-	
+
+	private final String apiKey;
+	private final Requester requester;
+
 	/**
 	 * Constructor for the API.
+	 *
 	 * @param apiKey your api key for your organization
 	 * @since 1.0.0
 	 */
@@ -51,26 +49,27 @@ public class StatuspageAPI {
 		this.apiKey = apiKey;
 		this.requester = new Requester(this);
 	}
-	
+
 	/**
 	 * Get a list of all {@link de.taucher.atlassian_statuspage_api.entities.Page Pages} you have access to
+	 *
 	 * @return a list with the Page instances
 	 * @since 1.0.0
 	 */
-	public List<Page> getPages(){
+	public List<Page> getPages() {
 		List<Page> result = new ArrayList<>();
 		Route.CompiledRoute route = Route.Pages.GET_PAGE_LIST.compile();
 		Request request = new Request(route, Request.EMPTY_BODY);
 		try {
 			Response response = getRequester().queue(request);
 			JSONArray jsonList = new JSONArray(response.body().string());
-			for(Object jsonObj : jsonList) {
-				if(jsonObj instanceof JSONObject) {
+			for (Object jsonObj : jsonList) {
+				if (jsonObj instanceof JSONObject) {
 					JSONObject json = (JSONObject) jsonObj;
 					Page page = Page.fromJson(this, json);
 					result.add(page);
-				}else {
-					System.err.println(jsonObj+" was not an JSONObject");
+				} else {
+					System.err.println(jsonObj + " was not an JSONObject");
 				}
 			}
 		}catch(Exception e) {

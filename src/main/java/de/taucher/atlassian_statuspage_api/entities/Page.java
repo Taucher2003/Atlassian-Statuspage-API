@@ -16,79 +16,77 @@
 
 package de.taucher.atlassian_statuspage_api.entities;
 
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
+import de.taucher.atlassian_statuspage_api.StatuspageAPI;
+import de.taucher.atlassian_statuspage_api.requests.Request;
+import de.taucher.atlassian_statuspage_api.requests.Route;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
-
-import de.taucher.atlassian_statuspage_api.StatuspageAPI;
-import de.taucher.atlassian_statuspage_api.requests.Request;
-import de.taucher.atlassian_statuspage_api.requests.Route;
-
 public class Page {
-	
-	private StatuspageAPI api;
 
-	private String id;
-	private OffsetDateTime createdAt;
-	private OffsetDateTime updatedAt;
-	private String name, 
-					pageDescription, 
-					headline,
-					branding,
-					subdomain,
-					domain,
-					url,
-					supportUrl;
-	private boolean hiddenFromSearch,
-					allowPageSubscribers,
-					allowIncidentSubscribers,
-					allowEmailSubscribers,
-					allowSmsSubscribers,
-					allowRssSubscribers,
-					allowWebhookSubscribers;
-	private String notificationsFromEmail,
-					notificationsEmailFooter;
-	private int activityScore;
-	private String twitterUsername;
+	private final StatuspageAPI api;
+
+	private final String id;
+	private final OffsetDateTime createdAt;
+	private final OffsetDateTime updatedAt;
+	private final String pageDescription;
+	private final String headline;
+	private final String supportUrl;
+	private final int activityScore;
+	private final String twitterUsername;
+	private final String ipRestrictions;
+	private final String city;
+	private final String state;
+	private final String country;
+	private final FaviconLogo faviconLogo;
+	private final TransactionalLogo transactionalLogo;
+	private final HeroCover heroCover;
 	private boolean viewersMustBeTeamMembers;
-	private String ipRestrictions,
-					city,
-					state,
-					country,
-					timeZone,
-					cssBodyBackgroundColor,
-					cssFontColor,
-					cssLightFontColor,
-					cssGreens,
-					cssYellows,
-					cssOranges,
-					cssBlues,
-					cssReds,
-					cssBorderColor,
-					cssGraphColor,
-					cssLinkColor,
-					cssNoData;
-	private FaviconLogo faviconLogo;
-	private TransactionalLogo transactionalLogo;
-	private HeroCover heroCover;
-	private EmailLogo emailLogo;
-	private TwitterLogo twitterLogo;
-	
+	private final EmailLogo emailLogo;
+	private final TwitterLogo twitterLogo;
+	private boolean hiddenFromSearch,
+			allowPageSubscribers,
+			allowIncidentSubscribers,
+			allowEmailSubscribers,
+			allowSmsSubscribers,
+			allowRssSubscribers,
+			allowWebhookSubscribers;
+	private String notificationsFromEmail,
+			notificationsEmailFooter;
+	private String name;
+	private String branding;
+	private String subdomain;
+	private String domain;
+	private String url;
+	private String timeZone;
+	private String cssBodyBackgroundColor;
+	private String cssFontColor;
+	private String cssLightFontColor;
+	private String cssGreens;
+	private String cssYellows;
+	private String cssOranges;
+	private String cssBlues;
+	private String cssReds;
+	private String cssBorderColor;
+	private String cssGraphColor;
+	private String cssLinkColor;
+	private String cssNoData;
+
 	private Page(StatuspageAPI api,
-				String id, OffsetDateTime createdAt, OffsetDateTime updatedAt, String name, String pageDescription, String headline, String branding, String subdomain, String domain, String url, String supportUrl,
-				boolean hiddenFromSearch, boolean allowPageSubscribers, boolean allowIncidentSubscribers, boolean allowEmailSubscribers, boolean allowSmsSubscribers, boolean allowRssSubscribers,
-				boolean allowWebhookSubscribers, String notificationsFromEmail, String notificationsEmailFooter, int activityScore, String twitterUsername, boolean viewersMustBeTeamMembers,
-				String ipRestrictions, String city, String state, String country, String timeZone, String cssBodyBackgroundColor, String cssFontColor, String cssLightFontColor, String cssGreens,
-				String cssYellows, String cssOranges, String cssBlues, String cssReds, String cssBorderColor, String cssGraphColor, String cssLinkColor, String cssNoData, FaviconLogo faviconLogo,
-				TransactionalLogo transactionalLogo, HeroCover heroCover, EmailLogo emailLogo, TwitterLogo twitterLogo) {
+				 String id, OffsetDateTime createdAt, OffsetDateTime updatedAt, String name, String pageDescription, String headline, String branding, String subdomain, String domain, String url, String supportUrl,
+				 boolean hiddenFromSearch, boolean allowPageSubscribers, boolean allowIncidentSubscribers, boolean allowEmailSubscribers, boolean allowSmsSubscribers, boolean allowRssSubscribers,
+				 boolean allowWebhookSubscribers, String notificationsFromEmail, String notificationsEmailFooter, int activityScore, String twitterUsername, boolean viewersMustBeTeamMembers,
+				 String ipRestrictions, String city, String state, String country, String timeZone, String cssBodyBackgroundColor, String cssFontColor, String cssLightFontColor, String cssGreens,
+				 String cssYellows, String cssOranges, String cssBlues, String cssReds, String cssBorderColor, String cssGraphColor, String cssLinkColor, String cssNoData, FaviconLogo faviconLogo,
+				 TransactionalLogo transactionalLogo, HeroCover heroCover, EmailLogo emailLogo, TwitterLogo twitterLogo) {
 		this.api = api;
 		this.id = id;
 		this.createdAt = createdAt;
@@ -294,13 +292,14 @@ public class Page {
 	}
 	
 	// Modify
-	
+
 	/**
 	 * Change the name of this page
-	 * @param description the new description
-	 * @since 1.0.0
-	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
+	 *
+	 * @param name the new description
+	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String,
 	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
+	 * @since 1.0.0
 	 */
 	public void setName(String name) {
 		set(name, domain, subdomain, url, branding, cssBodyBackgroundColor, cssFontColor, cssLightFontColor, cssGreens, cssYellows, cssOranges, cssReds, cssBlues, cssBorderColor, cssGraphColor,

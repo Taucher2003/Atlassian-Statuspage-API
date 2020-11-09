@@ -19,26 +19,25 @@ package de.taucher.atlassian_statuspage_api.requests;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.internal.http.HttpMethod;
-
 import de.taucher.atlassian_statuspage_api.requests.Route.CompiledRoute;
 
 public class Request {
-	
-	public static final RequestBody EMPTY_BODY = RequestBody.create(null, new byte[0]);
-    public static final MediaType MEDIA_TYPE_JSON  = MediaType.parse("application/json; charset=utf-8");
 
-	private CompiledRoute compiledRoute;
-	private RequestBody requestBody;
-	
-	public Request(CompiledRoute compiledRoute, RequestBody requestBody){
+	public static final RequestBody EMPTY_BODY = RequestBody.create(null, new byte[0]);
+	public static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
+
+	private final CompiledRoute compiledRoute;
+	private final RequestBody requestBody;
+
+	public Request(CompiledRoute compiledRoute, RequestBody requestBody) {
 		this.compiledRoute = compiledRoute;
 		this.requestBody = HttpMethod.permitsRequestBody(compiledRoute.getRoute().getMethod().name()) ? requestBody : null;
 	}
-	
+
 	public CompiledRoute getCompiledRoute() {
 		return compiledRoute;
 	}
-	
+
 	public RequestBody getRequestBody() {
 		return requestBody;
 	}

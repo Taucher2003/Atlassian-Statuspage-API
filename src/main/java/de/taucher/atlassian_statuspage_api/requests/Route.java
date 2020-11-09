@@ -16,29 +16,23 @@
 
 package de.taucher.atlassian_statuspage_api.requests;
 
-import static de.taucher.atlassian_statuspage_api.requests.Route.Method.*;
-
 import de.taucher.atlassian_statuspage_api.Methods;
+
+import static de.taucher.atlassian_statuspage_api.requests.Route.Method.*;
 
 public class Route {
 
 	public static final String API_BASE_URL = "https://api.statuspage.io/v1";
-	
-	public enum Method {
-		GET,
-		POST,
-		PUT,
-		PATCH,
-		DELETE;
-	}
-	
+
+	private final String url;
+
 	public static class Pages {
 		public static final Route GET_PAGE_LIST = new Route("/pages", GET);
 		public static final Route GET_PAGE = new Route("/pages/{page_id}", GET);
 		public static final Route UPDATE_PAGE = new Route("/pages/{page_id}", PATCH);
 		public static final Route UPDATE_FULL_PAGE = new Route("/pages/{page_id}", PUT);
 	}
-	
+
 	public static class Components {
 		public static final Route CREATE_COMPONENT = new Route("/pages/{page_id}/components", POST);
 		public static final Route GET_COMPONENT_LIST = new Route("/pages/{page_id}/components", GET);
@@ -47,26 +41,33 @@ public class Route {
 		public static final Route UPDATE_FULL_COMPONENT = new Route("/pages/{page_id}/components/{component_id}", PUT);
 		public static final Route DELETE_COMPONENT = new Route("/pages/{page_id}/components/{component_id}", DELETE);
 	}
-	
-	private String url;
-	private Method method;
-	
+
+	private final Method method;
+
 	private Route(String url, Method method) {
-		if(Methods.countChar(url, '{') != Methods.countChar(url, '}')) {
+		if (Methods.countChar(url, '{') != Methods.countChar(url, '}')) {
 			throw new IllegalArgumentException("There are unmatching parameter braces for route " + method.name() + "~" + url);
 		}
 		this.url = url;
 		this.method = method;
 	}
-	
+
+	public enum Method {
+		GET,
+		POST,
+		PUT,
+		PATCH,
+		DELETE
+	}
+
 	public String getUrl() {
 		return url;
 	}
-	
+
 	public Method getMethod() {
 		return method;
 	}
-	
+
 	public CompiledRoute compile(String... args) {
 		String compiledUrl = API_BASE_URL + url;
 		int param = 0;
@@ -77,16 +78,16 @@ public class Route {
 		}
 		return new CompiledRoute(this, compiledUrl);
 	}
-	
+
 	public static class CompiledRoute {
-		private Route route;
-		private String comiledUrl;
-		
+		private final Route route;
+		private final String comiledUrl;
+
 		private CompiledRoute(Route route, String compiledUrl) {
 			this.route = route;
 			this.comiledUrl = compiledUrl;
 		}
-		
+
 		public Route getRoute() {
 			return route;
 		}

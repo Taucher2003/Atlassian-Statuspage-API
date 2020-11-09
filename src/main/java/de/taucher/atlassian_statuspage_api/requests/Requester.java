@@ -16,17 +16,16 @@
 
 package de.taucher.atlassian_statuspage_api.requests;
 
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Response;
+import de.taucher.atlassian_statuspage_api.StatuspageAPI;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
-
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Response;
-
-import de.taucher.atlassian_statuspage_api.StatuspageAPI;
 
 public class Requester {
 
@@ -87,11 +86,8 @@ public class Requester {
 	private void executeQueue() {
 		Thread thread = new Thread(() -> {
 			synchronized (queue) {
-				while(true) {
-					if(shutdown && queue.size() == 0) {
-						break;
-					}
-					if(queue.size() == 0) {
+				while (!shutdown || queue.size() != 0) {
+					if (queue.size() == 0) {
 						try {
 							Thread.sleep(1);
 						} catch (InterruptedException e) {
@@ -99,8 +95,8 @@ public class Requester {
 						}
 						continue;
 					}
-					Request request = Arrays.asList(queue.keySet().toArray(new Request[queue.size()])).get(0);
-					while(System.currentTimeMillis() <= nextRequestAt && nextExecution != null) {
+					Request request = Arrays.asList(queue.keySet().toArray(new Request[0])).get(0);
+					while (System.currentTimeMillis() <= nextRequestAt && nextExecution != null) {
 						try {
 							System.out.println("Waiting with request");
 							Thread.sleep(1);
