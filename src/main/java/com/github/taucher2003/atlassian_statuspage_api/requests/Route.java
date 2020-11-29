@@ -14,11 +14,11 @@
  *	limitations under the License.
  */
 
-package de.taucher.atlassian_statuspage_api.requests;
+package com.github.taucher2003.atlassian_statuspage_api.requests;
 
-import de.taucher.atlassian_statuspage_api.Methods;
+import com.github.taucher2003.atlassian_statuspage_api.Methods;
 
-import static de.taucher.atlassian_statuspage_api.requests.Route.Method.*;
+import static com.github.taucher2003.atlassian_statuspage_api.requests.Route.Method.*;
 
 public class Route {
 

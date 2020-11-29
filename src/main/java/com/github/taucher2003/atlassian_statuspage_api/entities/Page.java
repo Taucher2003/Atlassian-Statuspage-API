@@ -14,13 +14,13 @@
  *	limitations under the License.
  */
 
-package de.taucher.atlassian_statuspage_api.entities;
+package com.github.taucher2003.atlassian_statuspage_api.entities;
 
+import com.github.taucher2003.atlassian_statuspage_api.StatuspageAPI;
+import com.github.taucher2003.atlassian_statuspage_api.requests.Request;
+import com.github.taucher2003.atlassian_statuspage_api.requests.Route;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
-import de.taucher.atlassian_statuspage_api.StatuspageAPI;
-import de.taucher.atlassian_statuspage_api.requests.Request;
-import de.taucher.atlassian_statuspage_api.requests.Route;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -820,7 +820,7 @@ public class Page {
 	}
 	
 	/**
-	 * Get the css for the blues
+	 * Get the css for the blues, this is the maintenance color
 	 * @return the color code
 	 */
 	public String getCssBlues() {
@@ -828,7 +828,7 @@ public class Page {
 	}
 	
 	/**
-	 * Get the css for the body background color
+	 * Get the css for the body background color, this is the color of the background
 	 * @return the color code
 	 */
 	public String getCssBodyBackgroundColor() {
@@ -836,7 +836,7 @@ public class Page {
 	}
 	
 	/**
-	 * Get the css for the border color
+	 * Get the css for the border color, this is used for the border around components and system metrics
 	 * @return the color code
 	 */
 	public String getCssBorderColor() {
@@ -844,7 +844,7 @@ public class Page {
 	}
 	
 	/**
-	 * Get the css for the font color
+	 * Get the css for the font color, this is the primary font color
 	 * @return the color code
 	 */
 	public String getCssFontColor() {
@@ -852,7 +852,7 @@ public class Page {
 	}
 	
 	/**
-	 * Get the css for the graph color
+	 * Get the css for the graph color, this is used as graph color in system metrics
 	 * @return the color code
 	 */
 	public String getCssGraphColor() {
@@ -860,7 +860,7 @@ public class Page {
 	}
 	
 	/**
-	 * Get the css for the greens
+	 * Get the css for the greens, this is the operational color
 	 * @return the color code
 	 */
 	public String getCssGreens() {
@@ -868,7 +868,7 @@ public class Page {
 	}
 	
 	/**
-	 * Get the css for the light font color
+	 * Get the css for the light font color, this is the secondary font color
 	 * @return the color code
 	 */
 	public String getCssLightFontColor() {
@@ -876,7 +876,7 @@ public class Page {
 	}
 	
 	/**
-	 * Get the css for the link color
+	 * Get the css for the link color, this is the color used for links and buttons
 	 * @return the color code
 	 */
 	public String getCssLinkColor() {
@@ -884,7 +884,7 @@ public class Page {
 	}
 	
 	/**
-	 * Get the css for the no data
+	 * Get the css for the no data, this is the color that is used if no data exists for the day
 	 * @return the color code
 	 */
 	public String getCssNoData() {
@@ -892,7 +892,7 @@ public class Page {
 	}
 	
 	/**
-	 * Get the css for the oranges
+	 * Get the css for the oranges, this color represents minor outages
 	 * @return the color code
 	 */
 	public String getCssOranges() {
@@ -900,7 +900,7 @@ public class Page {
 	}
 	
 	/**
-	 * Get the css for the reds
+	 * Get the css for the reds, this color represents major outages
 	 * @return the color code
 	 */
 	public String getCssReds() {
@@ -908,7 +908,7 @@ public class Page {
 	}
 	
 	/**
-	 * Get the css for the yellows
+	 * Get the css for the yellows, this color represents degraded performance
 	 * @return the color code
 	 */
 	public String getCssYellows() {

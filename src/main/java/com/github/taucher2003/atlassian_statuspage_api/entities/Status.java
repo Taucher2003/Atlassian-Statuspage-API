@@ -14,23 +14,18 @@
  *	limitations under the License.
  */
 
-package de.taucher.atlassian_statuspage_api;
+package com.github.taucher2003.atlassian_statuspage_api.entities;
 
-public class Methods {
+public enum Status {
+
+	OPERATIONAL,
+	DEGRADED_PERFORMANCE,
+	PARTIAL_OUTAGE,
+	MAJOR_OUTAGE,
+	UNDER_MAINTENANCE;
 	
-	public static boolean isEmpty(CharSequence sequence) {
-        return sequence == null || sequence.length() == 0;
-    }
-
-	public static int countChar(CharSequence sequence, char c) {
-		if (isEmpty(sequence))
-            return 0;
-        int count = 0;
-        for(int i = 0; i<sequence.length(); i++) {
-            if(sequence.charAt(i) == c) {
-                count++;
-            }
-        }
-        return count;
+	@Override
+	public String toString() {
+		return name().toLowerCase();
 	}
 }

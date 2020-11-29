@@ -14,12 +14,12 @@
  *	limitations under the License.
  */
 
-package de.taucher.atlassian_statuspage_api.entities;
+package com.github.taucher2003.atlassian_statuspage_api.entities;
 
+import com.github.taucher2003.atlassian_statuspage_api.StatuspageAPI;
+import com.github.taucher2003.atlassian_statuspage_api.requests.Request;
+import com.github.taucher2003.atlassian_statuspage_api.requests.Route;
 import com.squareup.okhttp.RequestBody;
-import de.taucher.atlassian_statuspage_api.StatuspageAPI;
-import de.taucher.atlassian_statuspage_api.requests.Request;
-import de.taucher.atlassian_statuspage_api.requests.Route;
 import org.json.JSONObject;
 
 import java.time.OffsetDateTime;

@@ -14,13 +14,13 @@
  *	limitations under the License.
  */
 
-package de.taucher.atlassian_statuspage_api;
+package com.github.taucher2003.atlassian_statuspage_api;
 
+import com.github.taucher2003.atlassian_statuspage_api.entities.Page;
+import com.github.taucher2003.atlassian_statuspage_api.requests.Request;
+import com.github.taucher2003.atlassian_statuspage_api.requests.Requester;
+import com.github.taucher2003.atlassian_statuspage_api.requests.Route;
 import com.squareup.okhttp.Response;
-import de.taucher.atlassian_statuspage_api.entities.Page;
-import de.taucher.atlassian_statuspage_api.requests.Request;
-import de.taucher.atlassian_statuspage_api.requests.Requester;
-import de.taucher.atlassian_statuspage_api.requests.Route;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -29,7 +29,7 @@ import java.util.List;
 
 /**
  * Root class of the Library. Use the constructor {@link #StatuspageAPI(String)} to create an instance.
- * From this class you can get a {@link de.taucher.atlassian_statuspage_api.entities.Page Page} and
+ * From this class you can get a {@link Page Page} and
  * perform actions on these Pages.
  *
  * @since 1.0.0
@@ -51,7 +51,7 @@ public class StatuspageAPI {
 	}
 
 	/**
-	 * Get a list of all {@link de.taucher.atlassian_statuspage_api.entities.Page Pages} you have access to
+	 * Get a list of all {@link Page Pages} you have access to
 	 *
 	 * @return a list with the Page instances
 	 * @since 1.0.0
@@ -79,7 +79,7 @@ public class StatuspageAPI {
 	}
 	
 	/**
-	 * Get a {@link de.taucher.atlassian_statuspage_api.entities.Page Page} with the given id
+	 * Get a {@link Page Page} with the given id
 	 * 
 	 * <br><br>This method is equivalent to
 	 * <pre>{@code
@@ -115,9 +115,9 @@ public class StatuspageAPI {
 	}
 	
 	/**
-	 * Gets the {@link de.taucher.atlassian_statuspage_api.requests.Requester Requester}.
+	 * Gets the {@link Requester Requester}.
 	 * 
-	 * <p><b>It is not recommended to create your own {@link de.taucher.atlassian_statuspage_api.requests.Request Requests}.</b>
+	 * <p><b>It is not recommended to create your own {@link Request Requests}.</b>
 	 * <br>You should use the already existing methods to perform your actions
 	 * @return the Requester
 	 * @since 1.0.0

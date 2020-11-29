@@ -14,11 +14,11 @@
  *	limitations under the License.
  */
 
-package de.taucher.atlassian_statuspage_api.requests;
+package com.github.taucher2003.atlassian_statuspage_api.requests;
 
+import com.github.taucher2003.atlassian_statuspage_api.StatuspageAPI;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Response;
-import de.taucher.atlassian_statuspage_api.StatuspageAPI;
 
 import java.io.IOException;
 import java.util.Arrays;
