@@ -98,7 +98,6 @@ public class Requester {
 					Request request = Arrays.asList(queue.keySet().toArray(new Request[0])).get(0);
 					while (System.currentTimeMillis() <= nextRequestAt && nextExecution != null) {
 						try {
-							System.out.println("Waiting with request");
 							Thread.sleep(1);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
