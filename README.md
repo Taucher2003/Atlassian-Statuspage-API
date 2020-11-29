@@ -82,6 +82,7 @@ List<Component> components = page.getComponents();
 ### Commit Structure
 Every commit will be prefixed with an emoji to indicate the type of the commit.
 <br>Here you have a list of the emojis that are used.
+<br>Please use them when contributing to this project.
 ```
 ⚡ Bugfixes
 🎈 Small changes
@@ -90,3 +91,13 @@ Every commit will be prefixed with an emoji to indicate the type of the commit.
 🛸 New Release version
 🔮 Readme Updates
 ```
+
+### Contribution needed / TO-DO
+| Type          | Description                      |
+|---------------|----------------------------------|
+| Documentation | Page#getNotificationsFromEmail() |
+| Documentation | Page.HeroCover                   |
+| Documentation | Page.TransactionalLogo           |
+| Documentation | Page.FaviconLogo                 |
+| Documentation | Page.TwitterLogo                 |
+| Documentation | Page.EmailLogo                   |
