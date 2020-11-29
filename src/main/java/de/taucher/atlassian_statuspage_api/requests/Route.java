@@ -24,15 +24,21 @@ public class Route {
 
 	public static final String API_BASE_URL = "https://api.statuspage.io/v1";
 
-	private final String url;
+	public enum Method {
+		GET,
+		POST,
+		PUT,
+		PATCH,
+		DELETE
+	}
 
 	public static class Pages {
 		public static final Route GET_PAGE_LIST = new Route("/pages", GET);
 		public static final Route GET_PAGE = new Route("/pages/{page_id}", GET);
 		public static final Route UPDATE_PAGE = new Route("/pages/{page_id}", PATCH);
 		public static final Route UPDATE_FULL_PAGE = new Route("/pages/{page_id}", PUT);
-	}
 
+	}
 	public static class Components {
 		public static final Route CREATE_COMPONENT = new Route("/pages/{page_id}/components", POST);
 		public static final Route GET_COMPONENT_LIST = new Route("/pages/{page_id}/components", GET);
@@ -40,8 +46,10 @@ public class Route {
 		public static final Route UPDATE_COMPONENT = new Route("/pages/{page_id}/components/{component_id}", PATCH);
 		public static final Route UPDATE_FULL_COMPONENT = new Route("/pages/{page_id}/components/{component_id}", PUT);
 		public static final Route DELETE_COMPONENT = new Route("/pages/{page_id}/components/{component_id}", DELETE);
+
 	}
 
+	private final String url;
 	private final Method method;
 
 	private Route(String url, Method method) {
@@ -50,14 +58,6 @@ public class Route {
 		}
 		this.url = url;
 		this.method = method;
-	}
-
-	public enum Method {
-		GET,
-		POST,
-		PUT,
-		PATCH,
-		DELETE
 	}
 
 	public String getUrl() {
