@@ -23,7 +23,29 @@ This library is made to provide an easy usage of the REST API from statuspage.io
 
 ## Getting started
 
-<br>First, you need to create your instance of the StatuspageAPI.
+### Obtaining the API Token
+
+First, you need to obtain the api token for your page.
+To get it, click on your profile and go to the API Info Site in your dashboard.
+
+<img src="https://raw.githubusercontent.com/Taucher2003/README-Assets/main/atlassian-statuspage-api/api-info.png">
+
+After that, there are two possibilities:
+<ul>
+    <li>You are the organization owner
+    <p>Then, you are fine. You can create an API Key or see the list of currently active keys there.
+    <img src="https://raw.githubusercontent.com/Taucher2003/README-Assets/main/atlassian-statuspage-api/api-keys-as-owner.png"></li>
+    <br>
+    <li>You aren't the owner of that organization
+    <p>Then, you will need to ask the organization owner to create an API Key for you
+    <img src="https://raw.githubusercontent.com/Taucher2003/README-Assets/main/atlassian-statuspage-api/api-keys.png"></li>
+</ul>
+
+<br>
+
+### Creating your StatuspageAPI instance
+
+<br>After obtaining your token, you need to create your instance of the StatuspageAPI.
 <br>From this instance, you can execute your operations.
 ```java
 StatuspageAPI api = new StatuspageAPI("api-token");
@@ -47,7 +69,7 @@ List<Page> pages = api.getPages();
 Components are the monitored objects. You can use this class to modify their status and other values.
 
 ```java
-Component component = page.getComponent("page-id");
+Component component = page.getComponent("component-id");
 List<Component> components = page.getComponents();
 ```
 
