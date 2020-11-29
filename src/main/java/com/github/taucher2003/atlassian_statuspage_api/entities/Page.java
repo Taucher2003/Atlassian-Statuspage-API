@@ -201,6 +201,7 @@ public class Page {
 	 * @param groupId the id of the group this component belongs to
 	 * @param showcase true, if this component should be shown
 	 * @return the created component
+	 * @since 1.0.0
 	 */
 	public Component createComponent(String description, Status status, String name, boolean onlyShowIfDegraded, String groupId, boolean showcase) {
 		Route.CompiledRoute route = Route.Components.CREATE_COMPONENT.compile(id);
@@ -275,6 +276,7 @@ public class Page {
 	 * Deletes a {@link Component} from this {@link Page}
 	 * <br>Be careful, this <b>cannot be undone</b>
 	 * @param component the component to delete
+	 * @since 1.0.0
 	 */
 	public void delete(Component component) {
 		delete(component.getId());
@@ -284,6 +286,7 @@ public class Page {
 	 * Deletes a {@link Component} from this {@link Page}
 	 * <br>Be careful, this <b>cannot be undone</b>
 	 * @param componentId the id of the component to delete
+	 * @since 1.0.0
 	 */
 	public void delete(String componentId) {
 		Route.CompiledRoute route = Route.Components.DELETE_COMPONENT.compile(id, componentId);
@@ -646,8 +649,8 @@ public class Page {
 	}
 	
 	/**
-	 * I'm not quite sure what this property is, but it is documented in the statuspage api and so I put it here
-	 * @param notificationsEmailFooter the new value
+	 * Set the footer for the notification emails sent by this Page
+	 * @param notificationsEmailFooter the new email footer
 	 * @since 1.0.0
 	 * @see #set(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, 
 	 * boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, String, String, String)
@@ -688,7 +691,7 @@ public class Page {
 	 * @param allowWebhookSubscribers a boolean that indicates the new value
 	 * @param notificationsFromEmail a value I don't know what it does. If you know it, help is appreciated
 	 * @param timeZone the new time zone
-	 * @param notificationsEmailFooter a value I don't know what it does. If you know it, help is appreciated
+	 * @param notificationsEmailFooter the footer for the notification emails sent by this {@link Page}
 	 * @since 1.0.0
 	 * @see #setName(String)
 	 * @see #setDomain(String)
@@ -781,6 +784,7 @@ public class Page {
 	/**
 	 * Get the activity score of this {@link Page}
 	 * @return the activity score as int
+	 * @since 1.0.0
 	 */
 	public int getActivityScore() {
 		return activityScore;
@@ -789,6 +793,7 @@ public class Page {
 	/**
 	 * Get the branding level of this {@link Page}
 	 * @return the branding level
+	 * @since 1.0.0
 	 */
 	public String getBranding() {
 		return branding;
@@ -797,6 +802,7 @@ public class Page {
 	/**
 	 * Get the city of this {@link Page}
 	 * @return the city
+	 * @since 1.0.0
 	 */
 	public String getCity() {
 		return city;
@@ -805,6 +811,7 @@ public class Page {
 	/**
 	 * Get the country of his {@link Page}
 	 * @return the country
+	 * @since 1.0.0
 	 */
 	public String getCountry() {
 		return country;
@@ -822,6 +829,7 @@ public class Page {
 	/**
 	 * Get the css for the blues, this is the maintenance color
 	 * @return the color code
+	 * @since 1.0.0
 	 */
 	public String getCssBlues() {
 		return cssBlues;
@@ -830,6 +838,7 @@ public class Page {
 	/**
 	 * Get the css for the body background color, this is the color of the background
 	 * @return the color code
+	 * @since 1.0.0
 	 */
 	public String getCssBodyBackgroundColor() {
 		return cssBodyBackgroundColor;
@@ -838,6 +847,7 @@ public class Page {
 	/**
 	 * Get the css for the border color, this is used for the border around components and system metrics
 	 * @return the color code
+	 * @since 1.0.0
 	 */
 	public String getCssBorderColor() {
 		return cssBorderColor;
@@ -846,6 +856,7 @@ public class Page {
 	/**
 	 * Get the css for the font color, this is the primary font color
 	 * @return the color code
+	 * @since 1.0.0
 	 */
 	public String getCssFontColor() {
 		return cssFontColor;
@@ -854,6 +865,7 @@ public class Page {
 	/**
 	 * Get the css for the graph color, this is used as graph color in system metrics
 	 * @return the color code
+	 * @since 1.0.0
 	 */
 	public String getCssGraphColor() {
 		return cssGraphColor;
@@ -862,6 +874,7 @@ public class Page {
 	/**
 	 * Get the css for the greens, this is the operational color
 	 * @return the color code
+	 * @since 1.0.0
 	 */
 	public String getCssGreens() {
 		return cssGreens;
@@ -870,6 +883,7 @@ public class Page {
 	/**
 	 * Get the css for the light font color, this is the secondary font color
 	 * @return the color code
+	 * @since 1.0.0
 	 */
 	public String getCssLightFontColor() {
 		return cssLightFontColor;
@@ -878,6 +892,7 @@ public class Page {
 	/**
 	 * Get the css for the link color, this is the color used for links and buttons
 	 * @return the color code
+	 * @since 1.0.0
 	 */
 	public String getCssLinkColor() {
 		return cssLinkColor;
@@ -886,6 +901,7 @@ public class Page {
 	/**
 	 * Get the css for the no data, this is the color that is used if no data exists for the day
 	 * @return the color code
+	 * @since 1.0.0
 	 */
 	public String getCssNoData() {
 		return cssNoData;
@@ -894,6 +910,7 @@ public class Page {
 	/**
 	 * Get the css for the oranges, this color represents minor outages
 	 * @return the color code
+	 * @since 1.0.0
 	 */
 	public String getCssOranges() {
 		return cssOranges;
@@ -902,6 +919,7 @@ public class Page {
 	/**
 	 * Get the css for the reds, this color represents major outages
 	 * @return the color code
+	 * @since 1.0.0
 	 */
 	public String getCssReds() {
 		return cssReds;
@@ -910,6 +928,7 @@ public class Page {
 	/**
 	 * Get the css for the yellows, this color represents degraded performance
 	 * @return the color code
+	 * @since 1.0.0
 	 */
 	public String getCssYellows() {
 		return cssYellows;
@@ -918,6 +937,7 @@ public class Page {
 	/**
 	 * Get the custom domain for this {@link Page}
 	 * @return the custom domain
+	 * @since 1.0.0
 	 */
 	public String getDomain() {
 		return domain;
@@ -926,6 +946,7 @@ public class Page {
 	/**
 	 * Get the EmailLogo for this {@link Page}
 	 * @return the EmailLogo
+	 * @since 1.0.0
 	 */
 	public EmailLogo getEmailLogo() {
 		return emailLogo;
@@ -934,6 +955,7 @@ public class Page {
 	/**
 	 * Get the FaviconLogo for this {@link Page}
 	 * @return the FaviconLogo
+	 * @since 1.0.0
 	 */
 	public FaviconLogo getFaviconLogo() {
 		return faviconLogo;
@@ -942,6 +964,7 @@ public class Page {
 	/**
 	 * Get the headline for this {@link Page}
 	 * @return the headline
+	 * @since 1.0.0
 	 */
 	public String getHeadline() {
 		return headline;
@@ -950,6 +973,7 @@ public class Page {
 	/**
 	 * Get the HeroCover for this {@link Page}
 	 * @return the HeroCover
+	 * @since 1.0.0
 	 */
 	public HeroCover getHeroCover() {
 		return heroCover;
@@ -958,6 +982,7 @@ public class Page {
 	/**
 	 * Get the id of this {@link Page}
 	 * @return the id
+	 * @since 1.0.0
 	 */
 	public String getId() {
 		return id;
@@ -966,6 +991,7 @@ public class Page {
 	/**
 	 * Get the ip restrictions of this {@link Page}
 	 * @return the ip restrictions
+	 * @since 1.0.0
 	 */
 	public String getIpRestrictions() {
 		return ipRestrictions;
@@ -974,6 +1000,7 @@ public class Page {
 	/**
 	 * Get the name of this {@link Page}
 	 * @return the name
+	 * @since 1.0.0
 	 */
 	public String getName() {
 		return name;
@@ -982,6 +1009,7 @@ public class Page {
 	/**
 	 * Get the footer for the notification emails sent by this {@link Page}
 	 * @return the email footer
+	 * @since 1.0.0
 	 */
 	public String getNotificationsEmailFooter() {
 		return notificationsEmailFooter;
@@ -992,6 +1020,7 @@ public class Page {
 	 * It is documented in the statuspage.io api docs so I put it here.
 	 * If someone knows what this does, help is appreciated
 	 * @return the value
+	 * @since 1.0.0
 	 */
 	public String getNotificationsFromEmail() {
 		return notificationsFromEmail;
@@ -1000,6 +1029,7 @@ public class Page {
 	/**
 	 * Get the page description of this {@link Page}
 	 * @return the description
+	 * @since 1.0.0
 	 */
 	public String getPageDescription() {
 		return pageDescription;
@@ -1008,6 +1038,7 @@ public class Page {
 	/**
 	 * Get the state of the {@link Page}
 	 * @return the state
+	 * @since 1.0.0
 	 */
 	public String getState() {
 		return state;
@@ -1016,6 +1047,7 @@ public class Page {
 	/**
 	 * Get the subdomain of the {@link Page}
 	 * @return the subdomain
+	 * @since 1.0.0
 	 */
 	public String getSubdomain() {
 		return subdomain;
@@ -1024,6 +1056,7 @@ public class Page {
 	/**
 	 * Get the support url of the {@link Page}
 	 * @return the support url
+	 * @since 1.0.0
 	 */
 	public String getSupportUrl() {
 		return supportUrl;
@@ -1032,6 +1065,7 @@ public class Page {
 	/**
 	 * Get the time zone of the {@link Page}
 	 * @return the time zone
+	 * @since 1.0.0
 	 */
 	public String getTimeZone() {
 		return timeZone;
@@ -1040,6 +1074,7 @@ public class Page {
 	/**
 	 * Get the TransactionalLogo of the {@link Page}
 	 * @return the TransactionalLogo
+	 * @since 1.0.0
 	 */
 	public TransactionalLogo getTransactionalLogo() {
 		return transactionalLogo;
@@ -1048,6 +1083,7 @@ public class Page {
 	/**
 	 * Get the TwitterLogo of the {@link Page}
 	 * @return the TwitterLogo
+	 * @since 1.0.0
 	 */
 	public TwitterLogo getTwitterLogo() {
 		return twitterLogo;
@@ -1056,6 +1092,7 @@ public class Page {
 	/**
 	 * Get the twitter username of the {@link Page}
 	 * @return the twitter username
+	 * @since 1.0.0
 	 */
 	public String getTwitterUsername() {
 		return twitterUsername;
@@ -1074,6 +1111,7 @@ public class Page {
 	/**
 	 * Get the url of this {@link Page}
 	 * @return the url
+	 * @since 1.0.0
 	 */
 	public String getUrl() {
 		return url;
@@ -1082,6 +1120,7 @@ public class Page {
 	/**
 	 * Get if the page accepts subscriptions via email
 	 * @return a boolean representing the value
+	 * @since 1.0.0
 	 */
 	public boolean isAllowEmailSubscribers() {
 		return allowEmailSubscribers;
@@ -1090,6 +1129,7 @@ public class Page {
 	/**
 	 * Get if the page accepts subscriptions to specific incidents
 	 * @return a boolean representing the value
+	 * @since 1.0.0
 	 */
 	public boolean isAllowIncidentSubscribers() {
 		return allowIncidentSubscribers;
@@ -1098,6 +1138,7 @@ public class Page {
 	/**
 	 * Get if the page accepts subscriptions
 	 * @return a boolean representing the value
+	 * @since 1.0.0
 	 */
 	public boolean isAllowPageSubscribers() {
 		return allowPageSubscribers;
@@ -1106,6 +1147,7 @@ public class Page {
 	/**
 	 * Get if the rss feed is enabled
 	 * @return a boolean representing the value
+	 * @since 1.0.0
 	 */
 	public boolean isAllowRssSubscribers() {
 		return allowRssSubscribers;
@@ -1114,6 +1156,7 @@ public class Page {
 	/**
 	 * Get if the page accepts subscriptions via sms
 	 * @return a boolean representing the value
+	 * @since 1.0.0
 	 */
 	public boolean isAllowSmsSubscribers() {
 		return allowSmsSubscribers;
@@ -1122,6 +1165,7 @@ public class Page {
 	/**
 	 * Get if the page accepts subscriptions via webhook
 	 * @return a boolean representing the value
+	 * @since 1.0.0
 	 */
 	public boolean isAllowWebhookSubscribers() {
 		return allowWebhookSubscribers;
@@ -1130,6 +1174,7 @@ public class Page {
 	/**
 	 * Get if the page is hidden from searches
 	 * @return a boolean representing the value
+	 * @since 1.0.0
 	 */
 	public boolean isHiddenFromSearch() {
 		return hiddenFromSearch;
@@ -1138,6 +1183,7 @@ public class Page {
 	/**
 	 * Get if the page can only be viewed by team members
 	 * @return a boolean representing the value
+	 * @since 1.0.0
 	 */
 	public boolean isViewersMustBeTeamMembers() {
 		return viewersMustBeTeamMembers;

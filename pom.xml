@@ -5,7 +5,7 @@
 
 	<groupId>com.github.taucher2003</groupId>
 	<artifactId>atlassian-statuspage-api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>atlassian-statuspage-api</name>
@@ -51,6 +51,7 @@
 									</excludes>
 								</filter>
 							</filters>
+							<finalName>${project.artifactId}-${project.version}-with-dependencies</finalName>
 						</configuration>
 					</execution>
 				</executions>

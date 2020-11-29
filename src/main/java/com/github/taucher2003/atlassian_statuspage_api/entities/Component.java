@@ -200,6 +200,7 @@ public class Component {
 	/**
 	 * Deletes this component.
 	 * <br>Be careful, this <b>cannot be undone</b>
+	 * @since 1.0.0
 	 */
 	public void delete() {
 		api.getPage(pageId).delete(this);
