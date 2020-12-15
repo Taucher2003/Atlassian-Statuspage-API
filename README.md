@@ -43,6 +43,22 @@ After that, there are two possibilities:
 
 <br>
 
+### Adding the library to your project
+
+Before you can continue with the coding, you need to add the library to your project. You can do that by downloading the
+latest release and reference that library.
+If you use Maven, you have it much easier. Then you just need to add the dependency to your `pom.xml`.
+Don't forget to replace **VERSION** with an actual version. You can see the version numbers in the releases of this project.
+```xml
+<dependency>
+  <groupId>com.github.taucher2003</groupId>
+  <artifactId>atlassian-statuspage-api</artifactId>
+  <version>VERSION</version>
+</dependency>
+```
+
+<br>
+
 ### Creating your StatuspageAPI instance
 
 <br>After obtaining your token, you need to create your instance of the StatuspageAPI.
