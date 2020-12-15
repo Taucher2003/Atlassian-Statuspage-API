@@ -5,15 +5,46 @@
 
 	<groupId>com.github.taucher2003</groupId>
 	<artifactId>atlassian-statuspage-api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
-
-	<name>atlassian-statuspage-api</name>
-	<url>http://maven.apache.org</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+
+	<name>atlassian-statuspage-api</name>
+	<description>A Java wrapper for the REST API from statuspage.io made by Atlassian</description>
+	<url>http://github.com/Taucher2003/Atlassian-Statuspage-API</url>
+	<licenses>
+	<license>
+		<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<name>Niklas van Schrick</name>
+			<email>mc.taucher2003@gmail.com</email>
+			<organization>com.github.taucher2003</organization>
+			<organizationUrl>http://www.github.com/Taucher2003</organizationUrl>
+		</developer>
+	</developers>
+	<scm>
+	<connection>scm:git:git://github.com/Taucher2003/Atlassian-Statuspage-API.git</connection>
+		<developerConnection>scm:git:ssh://github.com:Taucher2003/Atlassian-Statuspage-API.git</developerConnection>
+		<url>http://github.com/Taucher2003/Atlassian-Statuspage-API/tree/master</url>
+	</scm>
+
+	<distributionManagement>
+	<snapshotRepository>
+		<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+		<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 
 	<dependencies>
 		<dependency>
@@ -51,6 +82,7 @@
 									</excludes>
 								</filter>
 							</filters>
+							<finalName>${project.artifactId}-${project.version}-with-dependencies</finalName>
 						</configuration>
 					</execution>
 				</executions>
@@ -63,6 +95,46 @@
 					<source>8</source>
 					<target>8</target>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
