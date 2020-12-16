@@ -234,8 +234,8 @@ public class Page {
 			for(Object jsonObj : jsonList) {
 				if(jsonObj instanceof JSONObject) {
 					JSONObject json = (JSONObject) jsonObj;
-					Component page = Component.fromJson(api, json);
-					result.add(page);
+					Component component = Component.fromJson(api, json);
+					result.add(component);
 				}else {
 					System.err.println(jsonObj+" was not an JSONObject");
 				}
@@ -252,7 +252,7 @@ public class Page {
 	 * <br><br>This method is equivalent to
 	 * <pre>{@code
 	 * getComponents().stream().filter(
-	 * 	c -> c.getId().equals(pageId)
+	 * 	c -> c.getId().equals(componentId)
 	 * ).findFirst().orElse(null);
 	 * }</pre>
 	 * @param componentId the id of the component
@@ -308,8 +308,8 @@ public class Page {
 	 * 	i -> i.getId().equals(incidentId)
 	 * ).findFirst().orElse(null);
 	 * }</pre>
-	 * @param incidentId the id of the component
-	 * @return the Component instance
+	 * @param incidentId the id of the incident
+	 * @return the Incident instance
 	 * @since 1.0.0
 	 */
 	public Incident getIncident(String incidentId){
