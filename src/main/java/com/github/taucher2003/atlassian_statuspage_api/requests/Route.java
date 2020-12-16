@@ -48,6 +48,19 @@ public class Route {
 		public static final Route DELETE_COMPONENT = new Route("/pages/{page_id}/components/{component_id}", DELETE);
 
 	}
+	public static class Incidents {
+		public static final Route CREATE_INCIDENT = new Route("/pages/{page_id}/incidents", POST);
+		public static final Route GET_INCIDENT_LIST = new Route("/pages/{page_id}/incidents", GET);
+		public static final Route GET_ACTIVE_MAINTENANCES_LIST = new Route("/pages/{page_id}/incidents/active_maintenance", GET);
+		public static final Route GET_UPCOMING_INCIDENTS_LIST = new Route("/pages/{page_id}/incidents/upcoming", GET);
+		public static final Route GET_SCHEDULED_INCIDENTS_LIST = new Route("/pages/{page_id}/incidents/scheduled", GET);
+		public static final Route GET_UNRESOLVED_INCIDENTS_LIST = new Route("/pages/{page_id}/incidents/unresolved", GET);
+		public static final Route DELETE_INCIDENT = new Route("/pages/{page_id}/incidents/{incident_id}", DELETE);
+		public static final Route UPDATE_INCIDENT = new Route("/pages/{page_id}/incidents/{incident_id}", PATCH);
+		public static final Route UPDATE_FULL_INCIDENT = new Route("/pages/{page_id}/incidents/{incident_id}", PUT);
+		public static final Route GET_INCIDENT = new Route("/pages/{page_id}/incidents/{incident_id}", GET);
+
+	}
 
 	private final String url;
 	private final Method method;
