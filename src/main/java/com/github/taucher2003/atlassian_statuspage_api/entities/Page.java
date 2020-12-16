@@ -17,6 +17,7 @@
 package com.github.taucher2003.atlassian_statuspage_api.entities;
 
 import com.github.taucher2003.atlassian_statuspage_api.StatuspageAPI;
+import com.github.taucher2003.atlassian_statuspage_api.entities.incidents.Incident;
 import com.github.taucher2003.atlassian_statuspage_api.requests.Request;
 import com.github.taucher2003.atlassian_statuspage_api.requests.Route;
 import com.squareup.okhttp.RequestBody;
@@ -266,6 +267,59 @@ public class Page {
 			JSONObject json = new JSONObject(response.body().string());
 			return Component.fromJson(api, json);
 		} catch (JSONException | IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * Get a list of all {@link Incident} you have access to
+	 * @return a list with the Incident instances
+	 * @since 1.1.0
+	 */
+	public List<Incident> getIncidents(){
+		List<Incident> result = new ArrayList<>();
+		Route.CompiledRoute route = Route.Incidents.GET_INCIDENT_LIST.compile(id);
+		Request request = new Request(route, Request.EMPTY_BODY);
+		try {
+			Response response = api.getRequester().queue(request);
+			JSONArray jsonList = new JSONArray(response.body().string());
+			for(Object jsonObj : jsonList) {
+				if(jsonObj instanceof JSONObject) {
+					JSONObject json = (JSONObject) jsonObj;
+					Incident incident = Incident.fromJson(api, json);
+					result.add(incident);
+				}else {
+					System.err.println(jsonObj+" was not an JSONObject");
+				}
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	/**
+	 * Get a {@link Incident} with the given id
+	 *
+	 * <br><br>This method is equivalent to
+	 * <pre>{@code
+	 * getIncidents().stream().filter(
+	 * 	i -> i.getId().equals(incidentId)
+	 * ).findFirst().orElse(null);
+	 * }</pre>
+	 * @param incidentId the id of the component
+	 * @return the Component instance
+	 * @since 1.0.0
+	 */
+	public Incident getIncident(String incidentId){
+		Route.CompiledRoute route = Route.Incidents.GET_INCIDENT.compile(id, incidentId);
+		Request request = new Request(route, Request.EMPTY_BODY);
+		Response response = api.getRequester().queue(request);
+		try{
+			JSONObject json = new JSONObject(response.body().string());
+			return Incident.fromJson(api, json);
+		}catch(Exception e){
 			e.printStackTrace();
 		}
 		return null;
