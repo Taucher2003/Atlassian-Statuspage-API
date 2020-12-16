@@ -273,13 +273,121 @@ public class Page {
 	}
 
 	/**
-	 * Get a list of all {@link Incident} you have access to
+	 * Get a list of all {@link Incident} of this page
 	 * @return a list with the Incident instances
 	 * @since 1.1.0
 	 */
 	public List<Incident> getIncidents(){
 		List<Incident> result = new ArrayList<>();
 		Route.CompiledRoute route = Route.Incidents.GET_INCIDENT_LIST.compile(id);
+		Request request = new Request(route, Request.EMPTY_BODY);
+		try {
+			Response response = api.getRequester().queue(request);
+			JSONArray jsonList = new JSONArray(response.body().string());
+			for(Object jsonObj : jsonList) {
+				if(jsonObj instanceof JSONObject) {
+					JSONObject json = (JSONObject) jsonObj;
+					Incident incident = Incident.fromJson(api, json);
+					result.add(incident);
+				}else {
+					System.err.println(jsonObj+" was not an JSONObject");
+				}
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	/**
+	 * Get a list of all active maintenance {@link Incident Incidents} of this page
+	 * @return a list with the Incident instances
+	 * @since 1.1.0
+	 */
+	public List<Incident> getActiveMaintenances(){
+		List<Incident> result = new ArrayList<>();
+		Route.CompiledRoute route = Route.Incidents.GET_ACTIVE_MAINTENANCES_LIST.compile(id);
+		Request request = new Request(route, Request.EMPTY_BODY);
+		try {
+			Response response = api.getRequester().queue(request);
+			JSONArray jsonList = new JSONArray(response.body().string());
+			for(Object jsonObj : jsonList) {
+				if(jsonObj instanceof JSONObject) {
+					JSONObject json = (JSONObject) jsonObj;
+					Incident incident = Incident.fromJson(api, json);
+					result.add(incident);
+				}else {
+					System.err.println(jsonObj+" was not an JSONObject");
+				}
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	/**
+	 * Get a list of all upcoming {@link Incident Incidents} of this page
+	 * @return a list with the Incident instances
+	 * @since 1.1.0
+	 */
+	public List<Incident> getUpcomingIncidents(){
+		List<Incident> result = new ArrayList<>();
+		Route.CompiledRoute route = Route.Incidents.GET_UPCOMING_INCIDENTS_LIST.compile(id);
+		Request request = new Request(route, Request.EMPTY_BODY);
+		try {
+			Response response = api.getRequester().queue(request);
+			JSONArray jsonList = new JSONArray(response.body().string());
+			for(Object jsonObj : jsonList) {
+				if(jsonObj instanceof JSONObject) {
+					JSONObject json = (JSONObject) jsonObj;
+					Incident incident = Incident.fromJson(api, json);
+					result.add(incident);
+				}else {
+					System.err.println(jsonObj+" was not an JSONObject");
+				}
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	/**
+	 * Get a list of all scheduled {@link Incident Incidents} of this page
+	 * @return a list with the Incident instances
+	 * @since 1.1.0
+	 */
+	public List<Incident> getScheduledIncidents(){
+		List<Incident> result = new ArrayList<>();
+		Route.CompiledRoute route = Route.Incidents.GET_SCHEDULED_INCIDENTS_LIST.compile(id);
+		Request request = new Request(route, Request.EMPTY_BODY);
+		try {
+			Response response = api.getRequester().queue(request);
+			JSONArray jsonList = new JSONArray(response.body().string());
+			for(Object jsonObj : jsonList) {
+				if(jsonObj instanceof JSONObject) {
+					JSONObject json = (JSONObject) jsonObj;
+					Incident incident = Incident.fromJson(api, json);
+					result.add(incident);
+				}else {
+					System.err.println(jsonObj+" was not an JSONObject");
+				}
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	/**
+	 * Get a list of all unresolved {@link Incident Incidents} of this page
+	 * @return a list with the Incident instances
+	 * @since 1.1.0
+	 */
+	public List<Incident> getUnresolvedIncidents(){
+		List<Incident> result = new ArrayList<>();
+		Route.CompiledRoute route = Route.Incidents.GET_UNRESOLVED_INCIDENTS_LIST.compile(id);
 		Request request = new Request(route, Request.EMPTY_BODY);
 		try {
 			Response response = api.getRequester().queue(request);
@@ -310,7 +418,7 @@ public class Page {
 	 * }</pre>
 	 * @param incidentId the id of the incident
 	 * @return the Incident instance
-	 * @since 1.0.0
+	 * @since 1.1.0
 	 */
 	public Incident getIncident(String incidentId){
 		Route.CompiledRoute route = Route.Incidents.GET_INCIDENT.compile(id, incidentId);
@@ -329,18 +437,66 @@ public class Page {
 	 * Deletes a {@link Component} from this {@link Page}
 	 * <br>Be careful, this <b>cannot be undone</b>
 	 * @param component the component to delete
+	 * @since 1.0.0
+	 * @deprecated replace with {@link #deleteComponent(Component)}
 	 */
+	@Deprecated
 	public void delete(Component component) {
-		delete(component.getId());
+		deleteComponent(component);
 	}
 	
 	/**
 	 * Deletes a {@link Component} from this {@link Page}
 	 * <br>Be careful, this <b>cannot be undone</b>
 	 * @param componentId the id of the component to delete
+	 * @since 1.0.0
+	 * @deprecated replace with {@link #deleteComponent(String)}
 	 */
+	@Deprecated
 	public void delete(String componentId) {
+		deleteComponent(componentId);
+	}
+
+	/**
+	 * Deletes a {@link Component} from this {@link Page}
+	 * <br>Be careful, this <b>cannot be undone</b>
+	 * @param component the component to delete
+	 * @since 1.1.0
+	 */
+	public void deleteComponent(Component component) {
+		delete(component.getId());
+	}
+
+	/**
+	 * Deletes a {@link Component} from this {@link Page}
+	 * <br>Be careful, this <b>cannot be undone</b>
+	 * @param componentId the id of the component to delete
+	 * @since 1.1.0
+	 */
+	public void deleteComponent(String componentId) {
 		Route.CompiledRoute route = Route.Components.DELETE_COMPONENT.compile(id, componentId);
+		Request request = new Request(route, Request.EMPTY_BODY);
+		api.getRequester().queueAsync(request);
+	}
+
+	/**
+	 * Deletes a {@link Incident} from this {@link Page}
+	 * <br>Be careful, this <b>cannot be undone</b>
+	 * @param incident the incident to delete
+	 * @since 1.1.0
+	 */
+	public void deleteIncident(Incident incident) {
+		deleteIncident(incident.getId());
+	}
+
+	/**
+	 * Deletes a {@link Incident} from this {@link Page}
+	 * <br>Be careful, this <b>cannot be undone</b>
+	 * @param incidentId the id of the incident to delete
+	 * @since 1.1.0
+	 */
+	public void deleteIncident(String incidentId) {
+		Route.CompiledRoute route = Route.Incidents.DELETE_INCIDENT.compile(id, incidentId);
 		Request request = new Request(route, Request.EMPTY_BODY);
 		api.getRequester().queueAsync(request);
 	}

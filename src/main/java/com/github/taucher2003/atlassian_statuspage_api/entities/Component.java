@@ -202,7 +202,7 @@ public class Component {
 	 * <br>Be careful, this <b>cannot be undone</b>
 	 */
 	public void delete() {
-		api.getPage(pageId).delete(this);
+		api.getPage(pageId).deleteComponent(this);
 	}
 	
 	//Getters
