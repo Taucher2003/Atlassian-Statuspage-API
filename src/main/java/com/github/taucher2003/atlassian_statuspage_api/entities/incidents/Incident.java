@@ -56,14 +56,14 @@ public class Incident {
     private IncidentType type;
     private OffsetDateTime updatedAt;
 
-    private Incident(StatuspageAPI api,
-                     String id, List<Component> components, OffsetDateTime createdAt, IncidentImpact impact, IncidentImpact impactOverride,
-                     List<IncidentUpdate> incidentUpdates, HashMap<String, HashMap<String, Object>> metadata, OffsetDateTime monitoringAt,
-                     String name, String pageId, String postmortemBody, OffsetDateTime postmortemBodyLastUpdatedAt, boolean postmortemIgnored,
+    private Incident(StatuspageAPI api, String id, List<Component> components, OffsetDateTime createdAt, IncidentImpact impact,
+                     IncidentImpact impactOverride, List<IncidentUpdate> incidentUpdates,
+                     HashMap<String, HashMap<String, Object>> metadata, OffsetDateTime monitoringAt, String name, String pageId,
+                     String postmortemBody, OffsetDateTime postmortemBodyLastUpdatedAt, boolean postmortemIgnored,
                      boolean postmortemNotifiedSubscribers, boolean postmortemNotifiedTwitter, OffsetDateTime postmortemPublishedAt,
-                     OffsetDateTime resolvedAt, boolean scheduledAutoCompleted, boolean scheduledAutoInProgress, OffsetDateTime scheduledFor,
-                     boolean scheduledRemindPrior, OffsetDateTime scheduledRemindedAt, OffsetDateTime scheduledUntil, String shortlink,
-                     IncidentType type, OffsetDateTime updatedAt){
+                     OffsetDateTime resolvedAt, boolean scheduledAutoCompleted, boolean scheduledAutoInProgress,
+                     OffsetDateTime scheduledFor, boolean scheduledRemindPrior, OffsetDateTime scheduledRemindedAt,
+                     OffsetDateTime scheduledUntil, String shortlink, IncidentType type, OffsetDateTime updatedAt) {
         this.api = api;
         this.id = id;
         this.components = components;
@@ -93,7 +93,7 @@ public class Incident {
         this.updatedAt = updatedAt;
     }
 
-    public static Incident fromJson(StatuspageAPI api, JSONObject json){
+    public static Incident fromJson(StatuspageAPI api, JSONObject json) {
         String id = json.get("id") instanceof String ? json.getString("id") : null;
         List<Component> components = new ArrayList<>();
         for (Object jsonObj : json.getJSONArray("components")) {
@@ -107,8 +107,7 @@ public class Incident {
         }
         OffsetDateTime createdAt = json.get("created_at") instanceof String ? OffsetDateTime.parse(json.getString("created_at")) : null;
         IncidentImpact impact = json.get("impact") instanceof String ? IncidentImpact.valueOf(json.getString("impact")) : IncidentImpact.NONE;
-        IncidentImpact impactOverride = json.get("impact_override") instanceof String ?
-                IncidentImpact.valueOf(json.getString("impact_override")) : IncidentImpact.NONE;
+        IncidentImpact impactOverride = json.get("impact_override") instanceof String ? IncidentImpact.valueOf(json.getString("impact_override")) : IncidentImpact.NONE;
         List<IncidentUpdate> incidentUpdates = new ArrayList<>();
         for (Object jsonObj : json.getJSONArray("incident_updates")) {
             if (jsonObj instanceof JSONObject) {
@@ -120,9 +119,9 @@ public class Incident {
             }
         }
         HashMap<String, HashMap<String, Object>> metadata = new HashMap<>();
-        for(String key : json.getJSONObject("metadata").keySet()){
+        for (String key : json.getJSONObject("metadata").keySet()) {
             HashMap<String, Object> meta = new HashMap<>();
-            for(String subkey : json.getJSONObject("metadata").getJSONObject(key).keySet()){
+            for (String subkey : json.getJSONObject("metadata").getJSONObject(key).keySet()) {
                 meta.put(subkey, json.getJSONObject("metadata").getJSONObject(key).get(subkey));
             }
             metadata.put(key, meta);
@@ -131,29 +130,32 @@ public class Incident {
         String name = json.get("name") instanceof String ? json.getString("name") : null;
         String pageId = json.get("page_id") instanceof String ? json.getString("page_id") : null;
         String postmortemBody = json.get("postmortem_body") instanceof String ? json.getString("postmortem_body") : null;
-        OffsetDateTime postmortemBodyLastUpdatedAt = json.get("postmortem_body_last_updated_at") instanceof String ?
-                OffsetDateTime.parse(json.getString("postmortem_body_last_updated_at")) : null;
+        OffsetDateTime postmortemBodyLastUpdatedAt = json.get("postmortem_body_last_updated_at") instanceof String ? OffsetDateTime.parse(json.getString("postmortem_body_last_updated_at")) : null;
         boolean postmortemIgnored = json.getBoolean("postmortem_ignored");
         boolean postmortemNotifiedSubscribers = json.getBoolean("postmortem_notified_subscribers");
         boolean postmortemNotifiedTwitter = json.getBoolean("postmortem_notified_twitter");
-        OffsetDateTime postmortemPublishedAt = json.get("postmortem_published_at") instanceof String ?
-                OffsetDateTime.parse(json.getString("postmortem_published_at")) : null;
+        OffsetDateTime postmortemPublishedAt = json.get("postmortem_published_at") instanceof String ? OffsetDateTime.parse(json.getString("postmortem_published_at")) : null;
         OffsetDateTime resolvedAt = json.get("resolved_at") instanceof String ? OffsetDateTime.parse(json.getString("resolved_at")) : null;
         boolean scheduledAutoCompleted = json.getBoolean("scheduled_auto_completed");
         boolean scheduledAutoInProgress = json.getBoolean("scheduled_auto_in_progress");
         OffsetDateTime scheduledFor = json.get("scheduled_for") instanceof String ? OffsetDateTime.parse(json.getString("scheduled_for")) : null;
         boolean scheduledRemindPrior = json.getBoolean("scheduled_remind_prior");
-        OffsetDateTime scheduledRemindedAt = json.get("scheduled_reminded_at") instanceof String ?
-                OffsetDateTime.parse(json.getString("scheduled_reminded_at")) : null;
-        OffsetDateTime scheduledUntil = json.get("scheduled_until") instanceof String ?
-                OffsetDateTime.parse(json.getString("scheduled_until")) : null;
+        OffsetDateTime scheduledRemindedAt = json.get("scheduled_reminded_at") instanceof String ? OffsetDateTime.parse(json.getString("scheduled_reminded_at")) : null;
+        OffsetDateTime scheduledUntil = json.get("scheduled_until") instanceof String ? OffsetDateTime.parse(json.getString("scheduled_until")) : null;
         String shortlink = json.get("shortlink") instanceof String ? json.getString("shortlink") : null;
         IncidentType type = json.get("status") instanceof String ? IncidentType.valueOf("status") : IncidentType.REALTIME;
         OffsetDateTime updatedAt = json.get("updated_at") instanceof String ? OffsetDateTime.parse(json.getString("updated_at")) : null;
-        return new Incident(api, id, components, createdAt, impact, impactOverride, incidentUpdates, metadata, monitoringAt, name, pageId, postmortemBody,
-                postmortemBodyLastUpdatedAt, postmortemIgnored, postmortemNotifiedSubscribers, postmortemNotifiedTwitter, postmortemPublishedAt,
-                resolvedAt, scheduledAutoCompleted, scheduledAutoInProgress, scheduledFor, scheduledRemindPrior, scheduledRemindedAt,
-                scheduledUntil, shortlink, type, updatedAt);
+        return new Incident(api, id, components, createdAt, impact, impactOverride, incidentUpdates, metadata, monitoringAt, name,
+                pageId, postmortemBody, postmortemBodyLastUpdatedAt, postmortemIgnored, postmortemNotifiedSubscribers,
+                postmortemNotifiedTwitter, postmortemPublishedAt, resolvedAt, scheduledAutoCompleted, scheduledAutoInProgress,
+                scheduledFor, scheduledRemindPrior, scheduledRemindedAt, scheduledUntil, shortlink, type, updatedAt);
+    }
+
+    public void set(String name, IncidentStatus status, IncidentImpact impactOverride, OffsetDateTime scheduledFor,
+                    OffsetDateTime scheduledUntil, boolean scheduledRemindPrior, boolean scheduledAutoInProgress,
+                    boolean scheduledAutoCompleted, HashMap<String, HashMap<String, Object>> metadata,
+                    String body) {
+
     }
 
     public StatuspageAPI getApi() {
@@ -161,106 +163,106 @@ public class Incident {
     }
 
     public List<Component> getComponents() {
-		return components;
-	}
-    
+        return components;
+    }
+
     public OffsetDateTime getCreatedAt() {
-		return createdAt;
-	}
-    
+        return createdAt;
+    }
+
     public String getId() {
-		return id;
-	}
-    
+        return id;
+    }
+
     public IncidentImpact getImpact() {
-		return impact;
-	}
-    
+        return impact;
+    }
+
     public IncidentImpact getImpactOverride() {
-		return impactOverride;
-	}
-    
+        return impactOverride;
+    }
+
     public List<IncidentUpdate> getIncidentUpdates() {
-		return incidentUpdates;
-	}
-    
+        return incidentUpdates;
+    }
+
     public HashMap<String, HashMap<String, Object>> getMetadata() {
-		return metadata;
-	}
-    
+        return metadata;
+    }
+
     public OffsetDateTime getMonitoringAt() {
-		return monitoringAt;
-	}
-    
+        return monitoringAt;
+    }
+
     public String getName() {
-		return name;
-	}
-    
+        return name;
+    }
+
     public String getPageId() {
-		return pageId;
-	}
-    
+        return pageId;
+    }
+
     public String getPostmortemBody() {
-		return postmortemBody;
-	}
-    
+        return postmortemBody;
+    }
+
     public OffsetDateTime getPostmortemBodyLastUpdatedAt() {
-		return postmortemBodyLastUpdatedAt;
-	}
-    
+        return postmortemBodyLastUpdatedAt;
+    }
+
     public OffsetDateTime getPostmortemPublishedAt() {
-		return postmortemPublishedAt;
-	}
-    
+        return postmortemPublishedAt;
+    }
+
     public OffsetDateTime getResolvedAt() {
-		return resolvedAt;
-	}
-    
+        return resolvedAt;
+    }
+
     public OffsetDateTime getScheduledFor() {
-		return scheduledFor;
-	}
-    
+        return scheduledFor;
+    }
+
     public OffsetDateTime getScheduledRemindedAt() {
-		return scheduledRemindedAt;
-	}
-    
+        return scheduledRemindedAt;
+    }
+
     public OffsetDateTime getScheduledUntil() {
-		return scheduledUntil;
-	}
-    
+        return scheduledUntil;
+    }
+
     public String getShortlink() {
-		return shortlink;
-	}
-    
+        return shortlink;
+    }
+
     public IncidentType getType() {
-		return type;
-	}
-    
+        return type;
+    }
+
     public OffsetDateTime getUpdatedAt() {
-		return updatedAt;
-	}
-    
+        return updatedAt;
+    }
+
     public boolean isPostmortemIgnored() {
-		return postmortemIgnored;
-	}
-    
+        return postmortemIgnored;
+    }
+
     public boolean isPostmortemNotifiedSubscribers() {
-		return postmortemNotifiedSubscribers;
-	}
-    
+        return postmortemNotifiedSubscribers;
+    }
+
     public boolean isPostmortemNotifiedTwitter() {
-		return postmortemNotifiedTwitter;
-	}
-    
+        return postmortemNotifiedTwitter;
+    }
+
     public boolean isScheduledAutoCompleted() {
-		return scheduledAutoCompleted;
-	}
-    
+        return scheduledAutoCompleted;
+    }
+
     public boolean isScheduledAutoInProgress() {
-		return scheduledAutoInProgress;
-	}
-    
+        return scheduledAutoInProgress;
+    }
+
     public boolean isScheduledRemindPrior() {
-		return scheduledRemindPrior;
-	}
+        return scheduledRemindPrior;
+    }
 }
